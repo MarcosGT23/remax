@@ -1,0 +1,208 @@
+---
+// src/pages/inmuebles.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+
+import { fetchAPI } from '../lib/api.js';
+import { safeMediaUrl, safeFormatPrice } from '../lib/propertiesData.js';
+
+const staticPropiedades = [
+  {
+    id: "prop-3",
+    title: "Hermosa Casa Minimalista con Piscina en Equipetrol, Santa Cruz",
+    type: "venta",
+    typeName: "Venta",
+    priceValue: "285,000",
+    category: "Casa",
+    bedrooms: 4,
+    bathrooms: 4,
+    area: "340 m²",
+    image: "/images/hero-image-5.webp"
+  },
+  {
+    id: "prop-1",
+    title: "Casa de Campo en Venta, Plan 3000, Santa Cruz",
+    type: "venta",
+    typeName: "Venta",
+    priceValue: "70,000",
+    category: "Casa",
+    bedrooms: 2,
+    bathrooms: 1,
+    area: "150 m²",
+    image: "/images/roof-replacement.webp"
+  },
+  {
+    id: "alquiler-local-comercial-santa-cruz-villa-1ro-de-mayo-1200986298-28",
+    title: "Alquiler de Local Comercial en Villa 1ro de Mayo",
+    type: "alquiler",
+    typeName: "Alquiler",
+    priceValue: "1,200 / mes",
+    category: "Local / Oficina",
+    bedrooms: 0,
+    bathrooms: 2,
+    area: "180 m²",
+    image: "/images/commercial-roofing.webp"
+  }
+];
+
+let propiedades = [];
+
+try {
+  const response = await fetchAPI('propiedades', { populate: '*' });
+  const data = response.data || [];
+  if (data.length > 0) {
+    propiedades = data.map((item: any, idx: number) => {
+      const entry = item.documentId ? item : (item.attributes || item);
+      const finalImage = safeMediaUrl(entry.image, "/images/commercial-roofing.webp");
+      const propId = entry.slug || entry.shortId || entry.documentId || `prop-${idx + 1}`;
+      const badgeTitle = entry.badgeTitle || "Venta";
+      const typeLower = (entry.badgeTitle || entry.type || "venta").toLowerCase();
+
+      return {
+        id: propId,
+        title: entry.title || "Propiedad RE/MAX",
+        type: typeLower.includes("alquiler") ? "alquiler" : (typeLower.includes("anticretico") ? "anticretico" : "venta"),
+        typeName: badgeTitle,
+        priceValue: safeFormatPrice(entry.price),
+        category: entry.type || "Inmueble",
+        bedrooms: entry.bedrooms || 0,
+        bathrooms: entry.bathrooms || 0,
+        area: entry.builtArea || entry.totalArea || "100 m²",
+        image: finalImage
+      };
+    });
+  } else {
+    propiedades = staticPropiedades;
+  }
+} catch (e) {
+  propiedades = staticPropiedades;
+}
+---
+
+<Layout title="Buscar Inmuebles | RE/MAX Bolivia" description="Encuentra propiedades en Venta, Alquiler y Anticrético en Bolivia. Casas, departamentos, terrenos y locales comerciales.">
+  <Header />
+
+  <main class="main-wrapper">
+    <PageHeader
+      badge="Catálogo de Propiedades"
+      title="Inmuebles en Venta, Alquiler y Anticrético"
+      backLink="/"
+    />
+
+    <!-- Filters & Catalog Grid -->
+    <section style="padding: 60px 0 90px; background-color: #f8fafc;">
+      <div class="w-layout-blockcontainer container-main w-container">
+        
+        <!-- Filter Tabs -->
+        <div style="display: flex; gap: 12px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;" id="catalogFilters">
+          <button type="button" class="filter-tab active" data-type="all">Todos los Inmuebles</button>
+          <button type="button" class="filter-tab" data-type="venta">Ventas</button>
+          <button type="button" class="filter-tab" data-type="alquiler">Alquileres</button>
+          <button type="button" class="filter-tab" data-type="anticretico">Anticréticos</button>
+        </div>
+
+        <!-- Property Grid calling standardized PropertyCard -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;" id="propertiesGrid">
+          {propiedades.map(p => (
+            <div class="property-card" data-type={p.type}>
+              <PropertyCard
+                id={p.id}
+                type={p.category}
+                price={p.priceValue}
+                address={p.title}
+                features={[p.area, "0", p.bedrooms.toString(), p.bathrooms.toString()]}
+                badgeTitle={p.typeName}
+                badgeClass={p.type === "venta" ? "badge-sale" : "badge-rent"}
+                image={p.image}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .filter-tab {
+    background: white;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+
+  .filter-tab:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  .filter-tab.active {
+    background: #165cfd;
+    color: white;
+    border-color: #165cfd;
+    box-shadow: 0 4px 12px rgba(22, 92, 253, 0.25);
+  }
+
+  /* Transition for search items filtering */
+  .property-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.property-card');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialType = urlParams.get('tipo') || 'all';
+
+    function filterProps(type) {
+      tabs.forEach(t => {
+        if (t.getAttribute('data-type') === type) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+
+      cards.forEach(c => {
+        const cType = c.getAttribute('data-type');
+        if (type === 'all' || cType === type) {
+          c.style.display = 'block';
+          setTimeout(() => {
+            c.style.opacity = '1';
+            c.style.transform = 'scale(1)';
+          }, 10);
+        } else {
+          c.style.opacity = '0';
+          c.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            c.style.display = 'none';
+          }, 400);
+        }
+      });
+    }
+
+    filterProps(initialType);
+
+    tabs.forEach(t => {
+      t.addEventListener('click', () => {
+        const type = t.getAttribute('data-type');
+        filterProps(type);
+      });
+    });
+  });
+</script>

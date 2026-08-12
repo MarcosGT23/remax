@@ -1,0 +1,979 @@
+---
+// src/pages/noticias/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { fetchAPI } from '../../lib/api';
+
+const { slug } = Astro.params;
+const strapiUrl = import.meta.env.STRAPI_URL || 'http://localhost:1337';
+
+const staticPosts = [
+  {
+    slug: "5-consejos-clave-para-vender-tu-propiedad-al-mejor-precio-en-bolivia",
+    title: "5 Consejos Clave para Vender tu Propiedad al Mejor Precio en Bolivia",
+    category: "Consejos de Venta",
+    date: "8 de Agosto, 2026",
+    lastUpdate: "8 de Agosto, 2026",
+    readTime: "5 min de lectura",
+    image: "/images/hero-image-5.webp",
+    author: "Carlos Mendoza",
+    authorImage: "/images/avatar-01_1avatar-01.png",
+    introduction: "Vender una propiedad en Bolivia puede ser un proceso complejo si no se cuenta con las herramientas y el conocimiento de mercado adecuado. Para asegurar una transacción exitosa y rentable, existen pilares fundamentales que todo propietario debe dominar antes de colocar el cartel de 'Se Vende'.",
+    content: `
+      <h4>1. Preparación Visual (Home Staging)</h4>
+      <p>La primera impresión es decisiva. Limpia, despersonaliza y repara los pequeños detalles visibles de tu casa o departamento. Una capa de pintura de tonos neutros e iluminación adecuada pueden revalorizar tu inmueble en la mente del comprador.</p>
+      
+      <h4>2. Fijación Estratégica del Precio</h4>
+      <p>Establecer un precio basado en el valor sentimental suele retrasar la venta por meses o años. Realiza un Análisis Comparativo de Mercado (ACM) para tasar tu propiedad de manera profesional acorde a la oferta real de tu zona.</p>
+      
+      <blockquote>“Un precio correcto atrae hasta 3 veces más prospectos calificados en las primeras dos semanas de publicación.”</blockquote>
+      
+      <h4>3. Difusión en Portales y Redes</h4>
+      <p>Sube fotografías de alta calidad e incluye detalles técnicos claros de la superficie y documentación. La red de agentes RE/MAX Bolivia multiplica el alcance al compartir la propiedad de forma inmediata con miles de asesores en todo el país.</p>
+
+      <h4>4. Alianzas Estratégicas</h4>
+      <p>Contar con la asesoría de un profesional inmobiliario certificado te ahorra tiempo en filtros de clientes no calificados, negociaciones complejas y toda la redacción de minutas contractuales.</p>
+    `
+  },
+  {
+    slug: "que-es-un-anticretico-y-como-proteger-tu-inversion-legalmente",
+    title: "¿Qué es un Anticrético y Cómo Proteger tu Inversión Legalmente?",
+    category: "Guía Legal",
+    date: "1 de Agosto, 2026",
+    lastUpdate: "3 de Agosto, 2026",
+    readTime: "7 min de lectura",
+    image: "/images/roof-replacement.webp",
+    author: "María Fernanda Claros",
+    authorImage: "/images/avatar-02_1avatar-02.png",
+    introduction: "El contrato de anticrético es una modalidad habitacional muy popular en Bolivia que permite habitar un inmueble a cambio de una suma de dinero entregada al propietario. Sin embargo, para evitar riesgos patrimoniales, es indispensable cumplir con todos los formalismos de ley.",
+    content: `
+      <h4>¿Cómo funciona legalmente el Anticrético?</h4>
+      <p>En el anticrético, el propietario entrega el uso de un inmueble y el anticresista entrega un capital. Al finalizar el plazo del contrato (generalmente un año forzoso y uno voluntario), el propietario debe devolver la totalidad del dinero y el ocupante restituir la propiedad.</p>
+      
+      <h4>Puntos Críticos para Proteger tu Dinero</h4>
+      <ul>
+        <li><strong>Minuta de Contrato:</strong> Debe ser redactada por un abogado y posteriormente elevada a Instrumento Público ante un Notario de Fe Pública.</li>
+        <li><strong>Gravamen en Derechos Reales:</strong> Es vital registrar el contrato de anticresis en el folio real del inmueble. Esto le da prioridad al anticresista sobre otros acreedores en caso de embargo.</li>
+        <li><strong>Verificación de Gravámenes:</strong> Antes de firmar, solicita un Alodial actualizado para verificar que la propiedad no esté hipotecada o tenga anotaciones preventivas previas.</li>
+      </ul>
+      
+      <blockquote>“El registro de la anticresis en Derechos Reales no es opcional: es tu única garantía legal para recuperar tu dinero si el dueño se declara insolvente.”</blockquote>
+      
+      <h4>Devolución y Conclusiones</h4>
+      <p>Asegúrate de detallar en el contrato los términos de entrega, estado de conservación de la vivienda y las penalidades en caso de retraso en la devolución de los fondos por parte del propietario.</p>
+    `
+  },
+  {
+    slug: "tendencias-del-mercado-inmobiliario-en-santa-cruz-la-paz-y-cochabamba",
+    title: "Tendencias del Mercado Inmobiliario en Santa Cruz, La Paz y Cochabamba",
+    category: "Mercado Inmobiliario",
+    date: "25 de Julio, 2026",
+    lastUpdate: "25 de Julio, 2026",
+    readTime: "6 min de lectura",
+    image: "/images/commercial-roofing.webp",
+    author: "Roberto Gutierrez",
+    authorImage: "/images/avatar-03_1avatar-03.png",
+    introduction: "El eje metropolitano de Bolivia experimenta cambios importantes en la demanda de viviendas, impulsados por la plusvalía urbana, la oferta comercial y el surgimiento de nuevos formatos habitacionales. Analizamos cómo se comportan las principales ciudades del país.",
+    content: `
+      <h4>Santa Cruz de la Sierra: Expansión y Plusvalía</h4>
+      <p>Santa Cruz sigue liderando el desarrollo inmobiliario con proyectos verticales de gran envergadura en Equipetrol, Sirari y la zona norte. Asimismo, los condominios cerrados en el Urubó atraen inversiones nacionales y extranjeras que buscan seguridad y confort en espacios abiertos.</p>
+      
+      <h4>La Paz: Condominios y Densificación en Altura</h4>
+      <p>Debido a la topografía paceña, las zonas de Calacoto, Achumani e Irpavi en la Zona Sur concentran la mayor demanda de departamentos modernos y oficinas de alto perfil corporativo. Los proyectos mixtos con áreas comerciales ganan fuerza.</p>
+      
+      <blockquote>“La plusvalía en el eje troncal de Bolivia se mantiene robusta en distritos consolidados que ofrecen servicios completos a distancias caminables.”</blockquote>
+      
+      <h4>Cochabamba: El Atractivo del Clima y la Zona Norte</h4>
+      <p>Cochabamba destaca por su demanda de casas familiares y departamentos amplios en las zonas norte y Queru Queru. Se nota un gran interés por departamentos pequeños tipo studio, enfocados en el público universitario e inversores de renta corta tipo Airbnb.</p>
+    `
+  },
+  {
+    slug: "comprar-vs-alquilar-cual-es-la-mejor-decision-inmobiliaria-para-ti",
+    title: "Comprar vs. Alquilar: ¿Cuál es la Mejor Decisión Inmobiliaria para Ti?",
+    category: "Finanzas Inmobiliarias",
+    date: "18 de Julio, 2026",
+    lastUpdate: "18 de Julio, 2026",
+    readTime: "4 min de lectura",
+    image: "/images/residential-roofing.webp",
+    author: "Andrea Siles",
+    authorImage: "/images/avatar-01_1avatar-01.png",
+    introduction: "La decisión entre comprar una vivienda propia o continuar alquilando es uno de los dilemas financieros más importantes en la vida. Ambas opciones tienen ventajas estratégicas que varían según tus planes profesionales y tu estabilidad financiera.",
+    content: `
+      <h4>Ventajas de Comprar tu Propio Inmueble</h4>
+      <p>Comprar te permite construir un patrimonio real a largo plazo. En Bolivia, el crédito de vivienda social (interés regulado) facilita la adquisición de una primera casa con tasas accesibles. Además, cada mejora realizada aumenta el valor de venta futuro.</p>
+      
+      <h4>Ventajas de Alquilar</h4>
+      <p>Alquilar ofrece una mayor flexibilidad de movilidad geográfica en caso de cambios de trabajo. Además, evita compromisos de deuda a 20 o 30 años y te libera del pago de impuestos anuales a la propiedad y expensas de mantenimiento mayor.</p>
+      
+      <blockquote>“No existe una respuesta única: analiza tu capacidad de ahorro mensual, tu nivel de endeudamiento bancario y tus planes familiares a 5 años antes de firmar.”</blockquote>
+      
+      <h4>¿Cómo evaluar tu situación?</h4>
+      <p>Suma la cuota estimada del crédito bancario versus el alquiler de una vivienda similar. Si la diferencia es menor al 25% y posees el capital para la cuota inicial (generalmente el 10% al 20% del valor total), comprar suele ser la opción más inteligente.</p>
+    `
+  }
+];
+
+let post: any = null;
+let allPosts: any[] = [];
+
+try {
+  const response = await fetchAPI('noticias', {
+    filters: { slug: { $eq: slug } },
+    populate: '*'
+  });
+
+  if (response?.data && response.data.length > 0) {
+    const raw = response.data[0];
+    const entry = raw.documentId ? raw : (raw.attributes || raw);
+    const imageUrl = entry.image?.url || entry.image?.data?.attributes?.url || '/images/hero-image-5.webp';
+    const authorImageUrl = entry.authorImage?.url || entry.authorImage?.data?.attributes?.url || '/images/avatar-01_1avatar-01.png';
+
+    const finalImage = imageUrl.startsWith('http') ? imageUrl : `${strapiUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+    const finalAuthorImage = authorImageUrl.startsWith('http') ? authorImageUrl : `${strapiUrl}${authorImageUrl.startsWith('/') ? '' : '/'}${authorImageUrl}`;
+
+    post = {
+      slug: entry.slug || slug,
+      title: entry.title || 'Noticia RE/MAX Bolivia',
+      category: entry.category || 'Actualidad',
+      date: entry.date || 'Reciente',
+      lastUpdate: entry.lastUpdate || entry.updatedAt || entry.date || 'Reciente',
+      readTime: entry.readTime || '5 min de lectura',
+      image: finalImage,
+      author: entry.author || 'Equipo RE/MAX Bolivia',
+      authorImage: finalAuthorImage,
+      introduction: entry.introduction || '',
+      content: entry.content || ''
+    };
+  }
+} catch (error) {
+  // fallback silently
+}
+
+if (!post) {
+  post = staticPosts.find(p => p.slug === slug) || staticPosts[0];
+}
+
+allPosts = staticPosts.filter(p => p.slug !== post.slug).slice(0, 3);
+---
+
+<Layout title={`${post.title} | RE/MAX Bolivia`} description={post.introduction}>
+  <Header />
+
+  <div class="page-wrapper">
+    <!-- Inner Hero Section (Matching TitanPipe HTML EXACTLY) -->
+    <section class="section inner-hero">
+      <div class="container">
+        <div class="blog-singe-hero-wrap">
+          <div class="blog-singe-hero-left-box">
+            <div class="animation-content-wrap reveal-heading">
+              <div class="animation-content reveal-up">
+                <div class="blog-singe-hero-top-box">
+                  <div class="blog-category-wrap">
+                    <div class="blog-category-box">
+                      <div>{post.category}</div>
+                    </div>
+                  </div>
+                  <h1 class="blog-single-title">{post.title}</h1>
+                </div>
+              </div>
+            </div>
+            
+            <div class="animation-content-wrap reveal-heading">
+              <div class="animation-content reveal-up">
+                <div class="blog-single-information-wrap">
+                  <div class="blog-single-information-box">
+                    <div class="blog-author-image-box">
+                      <img src={post.authorImage} alt={post.author} class="blog-author-image" loading="eager" />
+                    </div>
+                    <div class="blog-single-information">
+                      <div class="description">Autor</div>
+                      <div class="description-medium dark">{post.author}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="blog-single-information">
+                    <div class="description">Publicado</div>
+                    <div class="description-medium dark">{post.date}</div>
+                  </div>
+                  
+                  <div class="blog-single-information">
+                    <div class="description">Última actualización</div>
+                    <div class="description-medium dark">{post.lastUpdate}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="blog-singe-hero-right-box">
+            <div class="image-wrap reveal-view-image">
+              <img src={post.image} alt={post.title} class="view-image is-blog-details" loading="eager" />
+              <div class="view-image-overlay charcoal-gray"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Body Section (Matching TitanPipe HTML EXACTLY) -->
+    <section class="section full-padding-bottom">
+      <div class="container">
+        <div class="blog-post-wrapper">
+          <!-- Left box: Article Rich Text -->
+          <div class="blog-single-left-box">
+            <div class="blog-introduction-box reveal-up">
+              <h2 class="blog-introduction">Introducción</h2>
+              <p class="secondary-text">{post.introduction}</p>
+            </div>
+            
+            <div class="blog-post richtext reveal-up" set:html={post.content} />
+          </div>
+
+          <!-- Right box: Sidebar Form & Social Share -->
+          <aside class="blog-single-right-box reveal-right">
+            <div class="blog-single-right-inner">
+              <div class="wf-form">
+                <form id="blog-email-form" onsubmit="event.preventDefault(); document.getElementById('formDone').style.display='block'; this.style.display='none';">
+                  <h3 class="get-in-touch-title">¡Contáctanos!</h3>
+                  <p class="small-text is-blog-form">Déjanos tu correo y un asesor de RE/MAX se pondrá en contacto contigo de forma inmediata con asesoría personalizada y gratuita.</p>
+                  
+                  <div class="blog-form-input-wrap">
+                    <label class="blog-input-label" for="email" style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: block;">Email</label>
+                    <input class="touch-field wf-input" id="email" placeholder="Tu correo electrónico" required type="email" />
+                  </div>
+                  
+                  <input class="subscribe-button wf-button" type="submit" value="Enviar Consulta" />
+                </form>
+                
+                <div id="formDone" class="wf-form-done" style="display:none; color: #10b981; font-weight: 700; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                  <div>¡Gracias! Pronto te contactaremos.</div>
+                </div>
+              </div>
+
+              <!-- Social Share -->
+              <div class="blog-social-share-box">
+                <div class="secondary-text-medium dark" style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Social Share</div>
+                <div class="icon-wrapper">
+                  <a class="icon-box inline-block" href="https://www.facebook.com/" rel="noopener" target="_blank" aria-label="Compartir en Facebook">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a class="icon-box inline-block" href="https://x.com/" rel="noopener" target="_blank" aria-label="Compartir en Twitter/X">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a class="icon-box inline-block" href="https://www.instagram.com/" rel="noopener" target="_blank" aria-label="Compartir en Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Articles Section -->
+    <section class="section full-padding related-articles">
+      <div class="container">
+        <div class="related-articles-title-wrap">
+          <h2 class="related-articles-title">Artículos Relacionados</h2>
+          <a class="view-all-articles-btn" href="/noticias">
+            <span>Ver Todos los Artículos</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        
+        <div class="blog-collection-list" role="list">
+          {allPosts.slice(0, 3).map(p => (
+            <div class="collection-item" role="listitem">
+              <div class="blog-single-card">
+                <a class="blog-card-image-box" href={`/noticias/${p.slug}`}>
+                  <img src={p.image} alt={p.title} class="blog-card-image" loading="lazy" />
+                  <span class="blog-card-category-badge">{p.category}</span>
+                </a>
+                <div class="blog-card-content-box">
+                  <div class="blog-card-information-box">
+                    <span>📅 {p.date}</span>
+                    <span>•</span>
+                    <span>⏱️ {p.readTime}</span>
+                  </div>
+                  <a class="blog-card-name" href={`/noticias/${p.slug}`}>{p.title}</a>
+                  <p class="blog-card-summary">{p.introduction}</p>
+                  <a class="blog-card-read-link" href={`/noticias/${p.slug}`}>
+                    <span>Leer Artículo Completo</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* TitanPipe CSS Style Variables mapped to our design colors */
+  :root {
+    --color--dark: #0f172a;
+    --color--white: #ffffff;
+    --color--black: #000000;
+    --color--primary-color: #165cfd; /* Branded RE/MAX Blue */
+    --color--primary-hover: #ef4444; /* Branded RE/MAX Red on hovers */
+    --color--text-grey-primary: #64748b;
+    --color--text-grey-secondary: #94a3b8;
+    --color--very-light-gray: #f1f5f9;
+    --color--line-gray: #cbd5e1;
+    --color--background-light: #f8fafc;
+    --color--cool-gray: #94a3b8;
+    
+    --_spacing---radius--radius-s: 16px;
+    --_spacing---radius--radius-m: 12px;
+    --_spacing---radius--radius-xs: 8px;
+    --_spacing---radius--circle-round: 50%;
+    
+    --_spacing---margin-padding--space-sm-plus: 24px;
+    --_spacing---margin-padding--space-m: 32px;
+    --_spacing---margin-padding--space-m-plus: 40px;
+    --_spacing---margin-padding--space-l: 48px;
+    --_spacing---margin-padding--space-xl-plus: 56px;
+    --_spacing---margin-padding--space-s: 16px;
+    --_spacing---margin-padding--space-none: 0px;
+    
+    --_typography---heading-h1--font-size: 2.2rem;
+    --_typography---heading-h4--font-size: 1.45rem;
+    --_typography---heading-h4--line-height: 1.35;
+    --_typography---heading-h4--font-weight: 800;
+    --_typography---heading-h4--letter-spacing: -0.5px;
+    --_typography---heading-h5--font-size: 1.2rem;
+    --_typography---paragraph-large--font-size: 1.05rem;
+    --_typography---paragraph-large--font-size-small: 0.9rem;
+    --font-weight--medium: 600;
+  }
+
+  /* Centered outer container layout matching Webflow */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .section.inner-hero {
+    margin-top: 118px; /* Offset fixed header height */
+    background: linear-gradient(135deg, #0a0e17 0%, #161f30 100%) !important;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .section.full-padding-bottom {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background-color: #f8fafc;
+  }
+
+  .section.related-articles {
+    padding-top: 80px;
+    padding-bottom: 100px;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* Detailed Blog Post Stylings (Copied from TitanPipe styles.css) */
+  .blog-singe-hero-wrap {
+    grid-template-rows: auto;
+    grid-template-columns: 61% 39%;
+    grid-auto-columns: 1fr;
+    display: grid;
+    align-items: center;
+  }
+
+  .blog-singe-hero-left-box {
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-right: 56px;
+    display: flex;
+  }
+
+  .blog-singe-hero-right-box {
+    border-radius: var(--_spacing---radius--radius-s);
+    overflow: hidden;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+    background-color: #1e293b;
+    aspect-ratio: 16/10;
+  }
+
+  .blog-single-information-wrap {
+    grid-column-gap: 32px;
+    grid-row-gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .blog-single-information-box {
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+  }
+
+  .blog-author-image-box {
+    justify-content: center;
+    align-items: center;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color--primary-hover);
+  }
+
+  .blog-author-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blog-single-information {
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    flex-flow: column;
+    display: flex;
+  }
+
+  .description {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--color--text-grey-secondary);
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+
+  .description-medium.dark {
+    font-size: 0.95rem;
+    color: var(--color--white);
+    font-weight: 600;
+  }
+
+  .image-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  .view-image.is-blog-details {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .blog-single-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--color--white);
+    line-height: 1.25;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .blog-category-wrap {
+    margin-bottom: 12px;
+  }
+
+  .blog-category-box {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color--primary-hover); /* Branded Red */
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 5px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .blog-post-wrapper {
+    grid-column-gap: 50px;
+    grid-row-gap: 30px;
+    justify-content: space-between;
+    align-items: flex-start;
+    display: flex;
+  }
+
+  .blog-single-left-box {
+    max-width: 732px;
+    width: 100%;
+    background-color: var(--color--white);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    box-sizing: border-box;
+  }
+
+  .blog-introduction-box {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .blog-introduction {
+    margin-bottom: 12px;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--color--dark);
+  }
+
+  .secondary-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color--text-grey-primary);
+    font-weight: 500;
+  }
+
+  .blog-post.richtext {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #334155;
+  }
+
+  .blog-post h4 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color--dark);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  .blog-post p {
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  .blog-post ul {
+    margin-top: 12px;
+    margin-bottom: 24px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .blog-post li {
+    margin-bottom: 4px;
+  }
+
+  .blog-post blockquote {
+    margin-top: 28px;
+    margin-bottom: 32px;
+    border-left: 5px solid var(--color--primary-hover); /* Branded Red */
+    padding-left: 20px;
+    font-style: italic;
+    color: #475569;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.6;
+    background-color: var(--color--background-light);
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .blog-post img {
+    margin-bottom: 30px;
+    border-radius: var(--_spacing---radius--radius-xs);
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Right Sidebar Styles */
+  .blog-single-right-box {
+    width: 100%;
+    max-width: 320px;
+    position: sticky;
+    top: 140px;
+    box-sizing: border-box;
+  }
+
+  .blog-single-right-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background-color: var(--color--dark);
+    padding: 30px;
+    border-radius: var(--_spacing---radius--radius-s);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+  }
+
+  .get-in-touch-title {
+    color: var(--color--white);
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+  }
+
+  .small-text.is-blog-form {
+    color: var(--color--cool-gray);
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .blog-form-input-wrap {
+    margin-bottom: 16px;
+  }
+
+  .touch-field {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    min-height: 42px;
+    color: var(--color--white);
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .touch-field:focus {
+    border-color: var(--color--primary-color);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .touch-field::placeholder {
+    color: var(--color--text-grey-secondary);
+  }
+
+  .subscribe-button {
+    border-radius: 8px;
+    background-color: var(--color--primary-color); /* Branded Blue */
+    width: 100%;
+    color: var(--color--white);
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .subscribe-button:hover {
+    background-color: #0d4ed3;
+  }
+
+  .blog-social-share-box {
+    margin-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    padding-top: 20px;
+  }
+
+  .icon-wrapper {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .icon-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .icon-box:hover {
+    background-color: var(--color--primary-hover); /* Branded Red */
+    color: var(--color--white);
+    border-color: var(--color--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Related Articles Card Styles (Copied from TitanPipe styles.css) */
+  /* Related Articles Section Styles */
+  .section.related-articles {
+    padding-top: 70px;
+    padding-bottom: 90px;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .related-articles-title-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .related-articles-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .view-all-articles-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #eff6ff;
+    color: #165cfd;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border: 1px solid rgba(22, 92, 253, 0.15);
+    transition: all 0.25s ease;
+  }
+
+  .view-all-articles-btn:hover {
+    background-color: #165cfd;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(22, 92, 253, 0.25);
+  }
+
+  .blog-collection-list {
+    grid-column-gap: 32px;
+    grid-row-gap: 32px;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-columns: 1fr;
+    display: grid;
+  }
+
+  .blog-card-category-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #165cfd;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .blog-card-summary {
+    font-size: 0.925rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-card-read-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #165cfd;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .blog-card-read-link:hover {
+    color: #1d4ed8;
+    transform: translateX(3px);
+  }
+
+  .collection-item {
+    flex: 1;
+    width: 100%;
+  }
+
+  .blog-single-card {
+    background-color: var(--color--white);
+    border: 1px solid #f1f5f9;
+    border-radius: var(--_spacing---radius--radius-s);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .blog-single-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06);
+    border-color: rgba(22, 92, 253, 0.1);
+  }
+
+  .blog-card-image-box {
+    position: relative;
+    height: 200px;
+    background-color: #f8fafc;
+    overflow: hidden;
+    display: block;
+  }
+
+  .blog-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .blog-single-card:hover .blog-card-image {
+    transform: scale(1.03);
+  }
+
+  .blog-card-content-box {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+
+  .blog-card-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color--dark);
+    text-decoration: none;
+    margin: 8px 0;
+    display: block;
+    transition: color 0.2s ease;
+  }
+
+  .blog-card-name:hover {
+    color: var(--color--primary-color);
+  }
+
+  .blog-card-descritption-box .description {
+    font-size: 0.9rem;
+    color: var(--color--text-grey-primary);
+    line-height: 1.5;
+    text-transform: none;
+    font-weight: 500;
+    letter-spacing: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .blog-card-information-box {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .blog-card-information-box .description.dark {
+    font-size: 0.8rem;
+    color: var(--color--text-grey-secondary);
+    text-transform: none;
+    font-weight: 600;
+  }
+
+  .blog-card-date-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .blog-card-dot {
+    border-radius: var(--_spacing---radius--circle-round);
+    background-color: var(--color--line-gray);
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Responsive styling mimicking TitanPipe styles.css media queries */
+  @media screen and (max-width: 991px) {
+    .blog-singe-hero-wrap {
+      grid-template-columns: 100%;
+      grid-row-gap: 30px;
+    }
+    
+    .blog-singe-hero-left-box {
+      padding-right: 0;
+    }
+    
+    .blog-post-wrapper {
+      flex-direction: column;
+      gap: 40px;
+    }
+    
+    .blog-single-left-box {
+      max-width: 100%;
+    }
+    
+    .blog-single-right-box {
+      max-width: 100%;
+      position: static;
+    }
+    
+    .blog-single-right-inner {
+      max-width: 100%;
+    }
+
+    .blog-collection-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .blog-single-title {
+      font-size: 2rem;
+    }
+
+    .blog-collection-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .section.inner-hero {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+  }
+</style>

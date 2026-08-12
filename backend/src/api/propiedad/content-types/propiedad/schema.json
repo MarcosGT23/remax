@@ -1,0 +1,86 @@
+{
+  "kind": "collectionType",
+  "collectionName": "propiedades",
+  "info": {
+    "singularName": "propiedad",
+    "pluralName": "propiedades",
+    "displayName": "Propiedad",
+    "description": "Colección de inmuebles RE/MAX"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "shortId": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "price": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "badgeTitle": {
+      "type": "enumeration",
+      "enum": ["Venta", "Alquiler", "Anticrético"]
+    },
+    "badgeClass": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "enumeration",
+      "enum": ["Santa Cruz", "La Paz", "Cochabamba", "Tarija", "Sucre", "Beni", "Pando", "Oruro", "Potosí"]
+    },
+    "features": {
+      "type": "json"
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "amenities": {
+      "type": "json"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "zone": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "float"
+    },
+    "longitude": {
+      "type": "float"
+    },
+    "agent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agente.agente",
+      "inversedBy": "propiedades"
+    }
+  }
+}

@@ -1,0 +1,671 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+import { fetchAPI } from '../lib/api';
+
+const staticNoticias = [
+  {
+    slug: "5-consejos-clave-para-vender-tu-propiedad-al-mejor-precio-en-bolivia",
+    title: "5 Consejos Clave para Vender tu Propiedad al Mejor Precio en Bolivia",
+    category: "Consejos de Venta",
+    date: "8 de Agosto, 2026",
+    summary: "Descubre cómo la preparación visual, la fijación estratégica de precio y la difusión profesional aceleran la venta de tu casa o departamento.",
+    image: "/images/hero-image-5.webp",
+    readTime: "5 min de lectura"
+  },
+  {
+    slug: "que-es-un-anticretico-y-como-proteger-tu-inversion-legalmente",
+    title: "¿Qué es un Anticrético y Cómo Proteger tu Inversión Legalmente?",
+    category: "Guía Legal",
+    date: "1 de Agosto, 2026",
+    summary: "Guía completa sobre la modalidad de anticrético en Bolivia: inscripción en Derechos Reales, minuta de contrato y precauciones clave.",
+    image: "/images/roof-replacement.webp",
+    readTime: "7 min de lectura"
+  },
+  {
+    slug: "tendencias-del-mercado-inmobiliario-en-santa-cruz-la-paz-y-cochabamba",
+    title: "Tendencias del Mercado Inmobiliario en Santa Cruz, La Paz y Cochabamba",
+    category: "Mercado Inmobiliario",
+    date: "25 de Julio, 2026",
+    summary: "Análisis de demanda en zonas residenciales y comerciales. Conoce cuáles son los distritos con mayor plusvalía proyectada.",
+    image: "/images/commercial-roofing.webp",
+    readTime: "6 min de lectura"
+  },
+  {
+    slug: "comprar-vs-alquilar-cual-es-la-mejor-decision-inmobiliaria-para-ti",
+    title: "Comprar vs. Alquilar: ¿Cuál es la Mejor Decisión Inmobiliaria para Ti?",
+    category: "Finanzas Inmobiliarias",
+    date: "18 de Julio, 2026",
+    summary: "Comparamos los aspectos financieros, flexibilidad y proyección patrimonial para ayudarte a tomar la mejor decisión según tu etapa de vida.",
+    image: "/images/residential-roofing.webp",
+    readTime: "4 min de lectura"
+  }
+];
+
+let noticias = [];
+try {
+  const response = await fetchAPI('noticias', { populate: 'image' });
+  const data = response.data || [];
+  if (data.length > 0) {
+    noticias = data.map((item: any) => {
+      const entry = item.documentId ? item : (item.attributes || item);
+      const imageUrl = entry.image?.url || entry.image?.data?.attributes?.url || '/images/hero-image-5.webp';
+      
+      let finalImage = imageUrl;
+      if (imageUrl.startsWith('/uploads/')) {
+        finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
+      } else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+        finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
+      }
+      
+      return {
+        slug: entry.slug,
+        title: entry.title,
+        category: entry.category || 'General',
+        date: entry.date,
+        summary: entry.introduction,
+        image: finalImage,
+        readTime: entry.readTime
+      };
+    });
+  } else {
+    noticias = staticNoticias;
+  }
+} catch (error) {
+  console.warn('Error fetching noticias from Strapi, falling back to static data:', error);
+  noticias = staticNoticias;
+}
+
+// Compute categories dynamically
+const categoryCounts = noticias.reduce((acc: Record<string, number>, item: any) => {
+  const cat = item.category || 'General';
+  acc[cat] = (acc[cat] || 0) + 1;
+  return acc;
+}, {});
+
+const categories = Object.keys(categoryCounts).map(cat => ({
+  name: cat,
+  count: categoryCounts[cat]
+}));
+---
+
+<Layout title="Noticias & Blog Inmobiliario | RE/MAX Bolivia" description="Mantente informado con las últimas noticias del mercado inmobiliario en Bolivia, consejos para compradores, vendedores e inversionistas.">
+  <Header />
+
+  <main class="main-wrapper">
+    <PageHeader
+      badge="Noticias & Actualidad"
+      title="Blog de Bienes Raíces e Inversiones"
+      backLink="/"
+    />
+
+    <!-- News Section with Left Sidebar Filter -->
+    <section class="news-section">
+      <div class="container-main">
+        <div class="news-layout">
+
+          <!-- Sidebar Izquierda: Panel de Filtros -->
+          <aside class="news-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-header">
+                <h3>Filtros</h3>
+                <button id="btnResetNewsFilters" class="reset-btn" type="button">Limpiar</button>
+              </div>
+
+              <!-- Buscador por Palabra Clave -->
+              <div class="filter-group">
+                <label for="newsSearchInput" class="filter-label">Buscar Artículo</label>
+                <div class="search-box">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="newsSearchInput" class="search-input" placeholder="Buscar por título..." />
+                </div>
+              </div>
+
+              <!-- Categorías -->
+              <div class="filter-group">
+                <label class="filter-label">Categorías</label>
+                <div class="category-list">
+                  <button class="cat-pill active" data-category="ALL" type="button">
+                    <span>Todas</span>
+                    <span class="count-badge">{noticias.length}</span>
+                  </button>
+                  {categories.map(cat => (
+                    <button class="cat-pill" data-category={cat.name} type="button">
+                      <span>{cat.name}</span>
+                      <span class="count-badge">{cat.count}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Ordenamiento -->
+              <div class="filter-group">
+                <label for="newsSortSelect" class="filter-label">Ordenar por</label>
+                <select id="newsSortSelect" class="filter-select">
+                  <option value="NEWEST">Más Recientes</option>
+                  <option value="OLDEST">Más Antiguas</option>
+                </select>
+              </div>
+
+            </div>
+          </aside>
+
+          <!-- Columna Derecha: Grilla de Noticias -->
+          <div class="news-content">
+            <div class="news-top-bar">
+              <div id="newsCountBadge" class="results-count">
+                Mostrando <strong>{noticias.length}</strong> artículos
+              </div>
+            </div>
+
+            <!-- News Grid -->
+            <div id="newsGrid" class="news-grid">
+              {noticias.map((item, idx) => (
+                <article
+                  class="news-card"
+                  data-title={item.title.toLowerCase()}
+                  data-summary={item.summary.toLowerCase()}
+                  data-category={item.category}
+                  data-index={idx}
+                >
+                  <div class="card-img-wrap">
+                    <a href={`/noticias/${item.slug}`}>
+                      <img src={item.image} alt={item.title} class="card-img" loading="lazy" />
+                    </a>
+                    <span class="card-category-badge">{item.category}</span>
+                  </div>
+
+                  <div class="card-body">
+                    <div>
+                      <div class="card-meta">
+                        <span>📅 {item.date}</span>
+                        <span>•</span>
+                        <span>⏱️ {item.readTime}</span>
+                      </div>
+                      <h3 class="card-title">
+                        <a href={`/noticias/${item.slug}`} class="news-title-link">{item.title}</a>
+                      </h3>
+                      <p class="card-summary">{item.summary}</p>
+                    </div>
+
+                    <a href={`/noticias/${item.slug}`} class="read-more-link">
+                      <span>Leer Artículo Completo</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <!-- Mensaje de Sin Resultados -->
+            <div id="newsEmptyState" class="news-empty-state" style="display: none;">
+              <div class="empty-icon">🔍</div>
+              <h4>No se encontraron artículos</h4>
+              <p>Intenta cambiar los términos de búsqueda o seleccionar otra categoría.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('newsSearchInput');
+    const sortSelect = document.getElementById('newsSortSelect');
+    const resetBtn = document.getElementById('btnResetNewsFilters');
+    const catPills = document.querySelectorAll('.cat-pill');
+    const grid = document.getElementById('newsGrid');
+    const cards = Array.from(document.querySelectorAll('.news-card'));
+    const countBadge = document.getElementById('newsCountBadge');
+    const emptyState = document.getElementById('newsEmptyState');
+
+    let activeCategory = 'ALL';
+
+    function filterAndSortNews() {
+      const query = (searchInput?.value || '').toLowerCase().trim();
+      const sortValue = sortSelect?.value || 'NEWEST';
+
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        const summary = card.getAttribute('data-summary') || '';
+        const category = card.getAttribute('data-category') || '';
+
+        const matchesQuery = !query || title.includes(query) || summary.includes(query);
+        const matchesCategory = activeCategory === 'ALL' || category === activeCategory;
+
+        if (matchesQuery && matchesCategory) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Handle Sorting
+      if (grid) {
+        const visibleCards = cards.filter(card => card.style.display !== 'none');
+        visibleCards.sort((a, b) => {
+          const idxA = parseInt(a.getAttribute('data-index') || '0', 10);
+          const idxB = parseInt(b.getAttribute('data-index') || '0', 10);
+          return sortValue === 'OLDEST' ? idxB - idxA : idxA - idxB;
+        });
+        visibleCards.forEach(card => grid.appendChild(card));
+      }
+
+      if (countBadge) {
+        countBadge.innerHTML = `Mostrando <strong>${visibleCount}</strong> ${visibleCount === 1 ? 'artículo' : 'artículos'}`;
+      }
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    catPills.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catPills.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-category') || 'ALL';
+        filterAndSortNews();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', filterAndSortNews);
+    }
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', filterAndSortNews);
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        if (sortSelect) sortSelect.value = 'NEWEST';
+        activeCategory = 'ALL';
+        catPills.forEach(p => p.classList.remove('active'));
+        const firstPill = document.querySelector('.cat-pill[data-category="ALL"]');
+        if (firstPill) firstPill.classList.add('active');
+        filterAndSortNews();
+      });
+    }
+  });
+</script>
+
+<style>
+  .news-section {
+    padding: 60px 0 90px;
+    background-color: #f8fafc;
+  }
+
+  .container-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Layout 2 Columnas: Sidebar + Grid */
+  .news-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  /* Sidebar Izquierda */
+  .news-sidebar {
+    width: 290px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+  }
+
+  .sidebar-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .sidebar-header h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .reset-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .reset-btn:hover {
+    color: #dc2626;
+    text-decoration: underline;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Input Buscador */
+  .search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    color: #94a3b8;
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    font-size: 0.9rem;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    background-color: #ffffff;
+    border-color: #165cfd;
+    box-shadow: 0 0 0 3px rgba(22, 92, 253, 0.1);
+  }
+
+  /* Píldoras de Categoría */
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cat-pill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 9px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+  }
+
+  .cat-pill:hover {
+    background-color: #eff6ff;
+    color: #165cfd;
+  }
+
+  .cat-pill.active {
+    background-color: #165cfd;
+    color: #ffffff;
+    border-color: #165cfd;
+    box-shadow: 0 4px 12px rgba(22, 92, 253, 0.2);
+  }
+
+  .count-badge {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .cat-pill.active .count-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+  }
+
+  /* Select */
+  .filter-select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-select:focus {
+    background-color: #ffffff;
+    border-color: #165cfd;
+  }
+
+  /* Contenido Derecha */
+  .news-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .news-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .results-count {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #ffffff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+  }
+
+  /* Grilla de Noticias */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+  }
+
+  /* Tarjeta de Noticia */
+  .news-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    height: 100%;
+  }
+
+  .news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+    border-color: rgba(22, 92, 253, 0.2);
+  }
+
+  .card-img-wrap {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    background: #f1f5f9;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .news-card:hover .card-img {
+    transform: scale(1.05);
+  }
+
+  .card-category-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #165cfd;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+    padding: 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.825rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.4;
+    margin: 0 0 10px;
+  }
+
+  .news-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .news-title-link:hover {
+    color: #165cfd;
+  }
+
+  .card-summary {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .read-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #165cfd;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .read-more-link:hover {
+    color: #1d4ed8;
+    transform: translateX(4px);
+  }
+
+  /* Empty State */
+  .news-empty-state {
+    text-align: center;
+    background: #ffffff;
+    padding: 60px 24px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+  }
+
+  .news-empty-state h4 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 8px;
+  }
+
+  .news-empty-state p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 991px) {
+    .news-layout {
+      flex-direction: column;
+    }
+    .news-sidebar {
+      width: 100%;
+      position: static;
+    }
+  }
+</style>

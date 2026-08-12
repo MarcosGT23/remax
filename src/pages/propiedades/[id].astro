@@ -1,0 +1,1233 @@
+---
+// src/pages/propiedades/[id].astro
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PropertyCard from "../../components/PropertyCard.astro";
+import { propertiesData, safeMediaUrl, safeFormatPrice } from "../../lib/propertiesData.js";
+import { fetchAPI } from "../../lib/api.js";
+
+const { id } = Astro.params;
+const strapiUrl = import.meta.env.STRAPI_URL || 'http://localhost:1337';
+let property: any = null;
+
+try {
+  const res = await fetchAPI("propiedades", {
+    filters: { $or: [{ slug: { $eq: id } }, { shortId: { $eq: id } }, { documentId: { $eq: id } }] },
+    populate: '*'
+  });
+
+  if (res?.data && res.data.length > 0) {
+    const raw = res.data[0];
+
+    const coverUrl = raw.image?.url
+      ? (raw.image.url.startsWith('http') ? raw.image.url : `${strapiUrl}${raw.image.url}`)
+      : '/images/commercial-roofing.webp';
+
+    const galleryUrls = Array.isArray(raw.gallery) && raw.gallery.length > 0
+      ? raw.gallery.map((g: any) => g.url
+          ? (g.url.startsWith('http') ? g.url : `${strapiUrl}${g.url}`)
+          : coverUrl)
+      : [coverUrl];
+
+    const ag = raw.agent || {};
+    const agPhone = ag.phone || '+591 712 34567';
+    const agPhoneDigits = agPhone.replace(/\D/g, '');
+    const agPhone591 = agPhoneDigits.startsWith('591') ? agPhoneDigits : `591${agPhoneDigits}`;
+    const agImgUrl = ag.image?.url
+      ? (ag.image.url.startsWith('http') ? ag.image.url : `${strapiUrl}${ag.image.url}`)
+      : '/images/avatar-01_1avatar-01.png';
+
+    property = {
+      id: raw.slug || raw.shortId || id,
+      shortId: raw.shortId || id,
+      title: raw.title || 'Propiedad RE/MAX Bolivia',
+      type: raw.type || 'Inmueble',
+      category: raw.category || 'Residencial',
+      price: safeFormatPrice(raw.price),
+      currency: raw.currency || 'USD',
+      priceBs: raw.priceBs || '',
+      period: raw.period || '',
+      address: raw.address || 'Santa Cruz de la Sierra',
+      city: raw.city || 'Santa Cruz',
+      zone: raw.zone || '',
+      bedrooms: raw.bedrooms ?? 0,
+      bathrooms: raw.bathrooms ?? 0,
+      garages: raw.garages ?? 0,
+      totalArea: raw.totalArea || '',
+      builtArea: raw.builtArea || '',
+      features: raw.features || [],
+      badgeTitle: raw.badgeTitle || 'Venta',
+      badgeClass: raw.badgeClass || 'badge-sale',
+      status: raw.status || 'Disponible',
+      yearBuilt: raw.yearBuilt || null,
+      lat: raw.latitude ?? -17.804,
+      lng: raw.longitude ?? -63.150,
+      image: coverUrl,
+      gallery: galleryUrls,
+      amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
+      description: raw.description || '',
+      agent: {
+        name: ag.name || 'Agente RE/MAX',
+        role: ag.role || 'Asesor Inmobiliario',
+        office: ag.city ? `RE/MAX ${ag.city}` : 'RE/MAX Bolivia',
+        phone: agPhone,
+        email: ag.email || 'info@remax.bo',
+        image: agImgUrl,
+        whatsapp: `https://wa.me/${agPhone591}?text=Hola%20${encodeURIComponent(ag.name || 'Agente')},%20me%20interesa%20la%20propiedad%20${encodeURIComponent(raw.title || '')}`,
+      }
+    };
+  }
+} catch (e) {}
+
+if (!property) {
+  property = propertiesData.find(p => p.id === id || p.shortId === id || p.slug === id) || propertiesData[0];
+}
+
+const relatedProperties = propertiesData
+  .filter((p) => p.id !== property.id)
+  .slice(0, 3);
+---
+
+<Layout
+  title={`${property.title} | RE/MAX Bolivia`}
+  description={`${property.type} en ${property.badgeTitle} en ${property.city}. ${property.address}. Precio: USD ${property.price}. Contacta a ${property.agent.name}.`}
+>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+    slot="head"
+  />
+  <script
+    is:inline
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+    slot="head"></script>
+
+  <Header />
+
+  <main class="property-detail-main">
+    <!-- Breadcrumb & Top Bar -->
+    <div class="breadcrumb-banner">
+      <div class="w-layout-blockcontainer container-main w-container">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+          <a href="/">Inicio</a>
+          <span class="sep">/</span>
+          <a href="/propiedades">Propiedades</a>
+          <span class="sep">/</span>
+          <a href="/propiedades">{property.city}</a>
+          <span class="sep">/</span>
+          <span class="current">{property.shortId}</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Property Hero Section -->
+    <section class="property-hero-section">
+      <div class="w-layout-blockcontainer container-main w-container">
+        <div class="property-hero-header">
+          <div class="hero-title-block">
+            <div class="title-meta-tags">
+              <span class={`badge-tag ${property.badgeClass}`}>{property.badgeTitle}</span>
+              <span class="category-tag">{property.category}</span>
+              <span class="id-tag">ID: {property.shortId}</span>
+            </div>
+            <h1 class="property-main-title">{property.title}</h1>
+            <p class="property-address-line">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>{property.address}</span>
+            </p>
+          </div>
+
+          <div class="hero-price-block">
+            <div class="price-value-container">
+              <span class="price-currency">{property.currency}</span>
+              <span class="price-amount">${property.price}</span>
+              {property.period && <span class="price-period">{property.period}</span>}
+            </div>
+            <div class="price-sub-value">
+              Aprox. Bs. {property.priceBs}
+            </div>
+            <div class="action-buttons-row">
+              <button id="btnShareProperty" class="icon-action-btn" title="Compartir propiedad">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span>Compartir</span>
+              </button>
+              <button id="btnBookmarkProperty" class="icon-action-btn" title="Guardar en favoritos">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span>Favorito</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Photo Gallery -->
+        <div class="gallery-wrapper">
+          <div class="main-gallery-view">
+            <img id="mainGalleryImg" src={property.image} alt={property.title} class="featured-gallery-img" />
+            <div class="gallery-badge-count">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>{property.gallery?.length || 1} Fotos</span>
+            </div>
+          </div>
+
+          {property.gallery && property.gallery.length > 1 && (
+            <div class="gallery-thumbnails-row">
+              {property.gallery.map((imgSrc: any, idx: number) => {
+                const url = typeof imgSrc === 'string' ? imgSrc : safeMediaUrl(imgSrc, property.image);
+                return (
+                  <button
+                    class={`gallery-thumb-btn ${idx === 0 ? 'active' : ''}`}
+                    data-img-src={url}
+                    aria-label={`Ver foto ${idx + 1}`}
+                  >
+                    <img src={url} alt={`Miniatura ${idx + 1}`} />
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <!-- Executive Specs Bar -->
+        <div class="specs-bar-container">
+          <div class="spec-tile">
+            <div class="spec-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="9" y1="3" x2="9" y2="21"/>
+                <line x1="15" y1="3" x2="15" y2="21"/>
+                <line x1="3" y1="9" x2="21" y2="9"/>
+                <line x1="3" y1="15" x2="21" y2="15"/>
+              </svg>
+            </div>
+            <div class="spec-info">
+              <span class="spec-value">{property.totalArea}</span>
+              <span class="spec-label">Terreno Total</span>
+            </div>
+          </div>
+
+          <div class="spec-tile">
+            <div class="spec-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </div>
+            <div class="spec-info">
+              <span class="spec-value">{property.builtArea}</span>
+              <span class="spec-label">Construidos</span>
+            </div>
+          </div>
+
+          {property.bedrooms > 0 && (
+            <div class="spec-tile">
+              <div class="spec-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 4v16M22 4v16M2 8h20M2 14h20M6 8v6M18 8v6"/>
+                </svg>
+              </div>
+              <div class="spec-info">
+                <span class="spec-value">{property.bedrooms}</span>
+                <span class="spec-label">Dormitorios</span>
+              </div>
+            </div>
+          )}
+
+          {property.bathrooms > 0 && (
+            <div class="spec-tile">
+              <div class="spec-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19h16a2 2 0 0 0 2-2V4H2v13a2 2 0 0 0 2 2zM6 4V2M18 4V2M12 4v6M10 6h4"/>
+                </svg>
+              </div>
+              <div class="spec-info">
+                <span class="spec-value">{property.bathrooms}</span>
+                <span class="spec-label">Baños</span>
+              </div>
+            </div>
+          )}
+
+          {property.garages > 0 && (
+            <div class="spec-tile">
+              <div class="spec-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="22" height="13" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="16" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <div class="spec-info">
+                <span class="spec-value">{property.garages}</span>
+                <span class="spec-label">Parqueos</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content & Contact Sidebar -->
+    <section class="property-content-section">
+      <div class="w-layout-blockcontainer container-main w-container">
+        <div class="property-layout-grid">
+          <!-- Left Column: Details & Amenities -->
+          <div class="property-left-content">
+            <!-- Overview Description -->
+            <div class="detail-card-block">
+              <h2 class="block-title">Descripción del Inmueble</h2>
+              <div class="description-text">
+                {property.description.split('\n\n').map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+
+            <!-- Features & Amenities Grid -->
+            {property.amenities && property.amenities.length > 0 && (
+              <div class="detail-card-block">
+                <h2 class="block-title">Características y Amenidades</h2>
+                <div class="amenities-grid">
+                  {property.amenities.map((item) => (
+                    <div class="amenity-pill">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- Map Location -->
+            <div class="detail-card-block">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+                <div>
+                  <h2 class="block-title" style="margin-bottom: 4px;">Ubicación Exacta en el Mapa</h2>
+                  <p class="map-subtitle" style="margin: 0; color: #64748b; font-size: 0.92rem;">{property.address} ({property.city})</p>
+                </div>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${property.lat},${property.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-open-gmaps"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  Ver en Google Maps
+                </a>
+              </div>
+
+              <div
+                id="detailPropertyMap"
+                class="interactive-property-map"
+                data-lat={property.lat}
+                data-lng={property.lng}
+                data-title={property.title}
+                data-address={property.address}
+                data-price={property.price}
+                data-badge={property.badgeTitle}
+              ></div>
+            </div>
+
+            <!-- Related Properties -->
+            {relatedProperties.length > 0 && (
+              <div class="detail-card-block related-block">
+                <h2 class="block-title">Propiedades Similares en {property.city}</h2>
+                <div class="related-properties-grid">
+                  {relatedProperties.map((relProp) => (
+                    <PropertyCard
+                      id={relProp.id}
+                      type={relProp.type}
+                      price={relProp.price}
+                      address={relProp.address}
+                      features={relProp.features}
+                      badgeTitle={relProp.badgeTitle}
+                      badgeClass={relProp.badgeClass}
+                      image={relProp.image}
+                      agentName={relProp.agent.name}
+                      agentRole={relProp.agent.role}
+                      agentPhone={relProp.agent.phone}
+                      agentImage={relProp.agent.image}
+                      agentWhatsapp={relProp.agent.whatsapp}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Right Column: Sticky Executive Agent Card -->
+          <div class="property-right-sidebar">
+            <div class="sticky-agent-card">
+              <span class="agent-badge-tag">Agente Inmobiliario Asignado</span>
+
+              <div class="agent-profile-header">
+                <img src={property.agent.image} alt={property.agent.name} class="agent-avatar-large" />
+                <div class="agent-header-details">
+                  <h3 class="agent-name">{property.agent.name}</h3>
+                  <span class="agent-role">{property.agent.role}</span>
+                  <span class="agent-office">📍 {property.agent.office}</span>
+                </div>
+              </div>
+
+              <!-- Agent Contact Information Details -->
+              <div class="agent-meta-box">
+                <div class="agent-meta-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  <span>{property.agent.experience || "Agente Certificado RE/MAX"}</span>
+                </div>
+
+                <div class="agent-meta-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  <a href={`tel:${property.agent.phone}`}>{property.agent.phone}</a>
+                </div>
+
+                <div class="agent-meta-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                  <a href={`mailto:${property.agent.email}`}>{property.agent.email}</a>
+                </div>
+              </div>
+
+              <!-- Direct Quick Actions -->
+              <div class="agent-direct-actions">
+                <a
+                  href={property.agent.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="whatsapp-direct-btn"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+                  </svg>
+                  <span>Contactar por WhatsApp</span>
+                </a>
+
+                <a href={`tel:${property.agent.phone}`} class="phone-direct-btn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  <span>Llamada Directa</span>
+                </a>
+              </div>
+
+              <!-- Link to Full Agent Profile -->
+              <a href={`/agentes/${property.agent.slug || 'carlos-mendoza'}`} class="btn-view-agent-profile">
+                <span>Ver Perfil Completo del Agente</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Gallery Thumbnails Click Handler
+    const mainGalleryImg = document.getElementById('mainGalleryImg');
+    const thumbBtns = document.querySelectorAll('.gallery-thumb-btn');
+
+    thumbBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const newSrc = btn.getAttribute('data-img-src');
+        if (mainGalleryImg && newSrc) {
+          mainGalleryImg.src = newSrc;
+          thumbBtns.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      });
+    });
+
+    // Share Button
+    const btnShare = document.getElementById('btnShareProperty');
+    if (btnShare) {
+      btnShare.addEventListener('click', () => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(window.location.href);
+          alert('¡Enlace de la propiedad copiado al portapapeles!');
+        } else {
+          alert(`Comparte este enlace: ${window.location.href}`);
+        }
+      });
+    }
+
+    // Favorite Button Toggle
+    const btnBookmark = document.getElementById('btnBookmarkProperty');
+    if (btnBookmark) {
+      btnBookmark.addEventListener('click', () => {
+        btnBookmark.classList.toggle('bookmarked');
+        if (btnBookmark.classList.contains('bookmarked')) {
+          alert('❤️ Propiedad guardada en tus favoritos.');
+        } else {
+          alert('Propiedad removida de favoritos.');
+        }
+      });
+    }
+
+    // Form Submit Toast
+    const form = document.getElementById('propertyInquiryForm');
+    const toast = document.getElementById('formSuccessToast');
+    if (form && toast) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.style.display = 'none';
+        toast.style.display = 'block';
+      });
+    }
+  });
+</script>
+
+<style>
+  .property-detail-main {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* Breadcrumb Banner */
+  .breadcrumb-banner {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 0;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: #64748b;
+  }
+
+  .breadcrumb-nav a {
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .breadcrumb-nav a:hover {
+    color: #165cfd;
+  }
+
+  .breadcrumb-nav .sep {
+    color: #94a3b8;
+  }
+
+  .breadcrumb-nav .current {
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  /* Property Hero Section */
+  .property-hero-section {
+    background-color: #ffffff;
+    padding: 32px 0 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .property-hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  .hero-title-block {
+    flex: 1;
+  }
+
+  .title-meta-tags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .badge-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-sale {
+    background-color: rgba(190, 18, 60, 0.1);
+    color: #be123c;
+  }
+
+  .badge-rent {
+    background-color: rgba(22, 92, 253, 0.1);
+    color: #165cfd;
+  }
+
+  .category-tag {
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .id-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+  }
+
+  .property-main-title {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.25;
+    margin: 0 0 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .property-address-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  /* Price Block */
+  .hero-price-block {
+    text-align: right;
+  }
+
+  .price-value-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .price-currency {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #165cfd;
+  }
+
+  .price-amount {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .price-period {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .price-sub-value {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .action-buttons-row {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+
+  .icon-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .icon-action-btn:hover {
+    background: #ffffff;
+    border-color: #165cfd;
+    color: #165cfd;
+  }
+
+  .icon-action-btn.bookmarked {
+    background: #ffe4e6;
+    border-color: #be123c;
+    color: #be123c;
+  }
+
+  /* Interactive Photo Gallery */
+  .gallery-wrapper {
+    margin-bottom: 24px;
+  }
+
+  .main-gallery-view {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #0f172a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .featured-gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-badge-count {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .gallery-thumbnails-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .gallery-thumb-btn {
+    width: 110px;
+    height: 74px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .gallery-thumb-btn.active,
+  .gallery-thumb-btn:hover {
+    border-color: #165cfd;
+    transform: translateY(-2px);
+  }
+
+  .gallery-thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Executive Specs Bar */
+  .specs-bar-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .spec-tile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .spec-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #165cfd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .spec-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spec-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.1;
+  }
+
+  .spec-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  /* Main Content Layout Grid */
+  .property-content-section {
+    padding-top: 40px;
+  }
+
+  .property-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* Left Column Detail Cards */
+  .detail-card-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  }
+
+  .block-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 20px;
+    letter-spacing: -0.3px;
+  }
+
+  .description-text p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 16px;
+  }
+
+  .description-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Amenities Grid */
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .amenity-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  /* Map Card */
+  .map-subtitle {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  .map-placeholder-card {
+    height: 240px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .map-pin-indicator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pulse-ring {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, 0.3);
+    animation: pulseMap 2s infinite;
+  }
+
+  @keyframes pulseMap {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .map-overlay-info {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Related Properties */
+  .related-block {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .related-properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  /* Right Sidebar (Cream Sticky Agent Card) */
+  .sticky-agent-card {
+    position: sticky;
+    top: 90px;
+    background: #f7f5f0; /* Warm elegant cream tone */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .agent-badge-tag {
+    align-self: flex-start;
+    background: rgba(22, 92, 253, 0.08);
+    color: #165cfd;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .agent-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .agent-avatar-large {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid #165cfd;
+    box-shadow: 0 4px 12px rgba(22, 92, 253, 0.15);
+  }
+
+  .agent-header-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .agent-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .agent-role {
+    font-size: 0.82rem;
+    color: #165cfd;
+    font-weight: 700;
+  }
+
+  .agent-office {
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .agent-meta-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .agent-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .agent-meta-item a {
+    color: #0f172a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .agent-meta-item a:hover {
+    color: #165cfd;
+  }
+
+  .agent-direct-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .whatsapp-direct-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #25d366;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  }
+
+  .whatsapp-direct-btn:hover {
+    background: #1eb857;
+    transform: translateY(-2px);
+  }
+
+  .phone-direct-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    padding: 10px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .phone-direct-btn:hover {
+    border-color: #0f172a;
+    background: #f8fafc;
+  }
+
+  .btn-view-agent-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-view-agent-profile:hover {
+    background: #165cfd;
+    box-shadow: 0 4px 14px rgba(22, 92, 253, 0.25);
+    transform: translateY(-1px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 991px) {
+    .property-layout-grid {
+      grid-template-columns: 1fr;
+    }
+    .property-hero-header {
+      flex-direction: column;
+    }
+    .hero-price-block {
+      text-align: left;
+    }
+    .price-value-container {
+      justify-content: flex-start;
+    }
+    .action-buttons-row {
+      justify-content: flex-start;
+    }
+    .main-gallery-view {
+      height: 340px;
+    }
+    .sticky-agent-card {
+      position: relative;
+      top: 0;
+    }
+  }
+
+  /* Dynamic Map Styling */
+  .interactive-property-map {
+    width: 100%;
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-open-gmaps {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    color: #165cfd;
+    border: 1.5px solid #165cfd;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-open-gmaps:hover {
+    background: #165cfd;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(22, 92, 253, 0.25);
+  }
+</style>
+
+<script>
+  declare const L: any;
+  document.addEventListener('DOMContentLoaded', () => {
+    const mapEl = document.getElementById('detailPropertyMap');
+    if (!mapEl || typeof L === 'undefined') return;
+
+    const lat = parseFloat(mapEl.getAttribute('data-lat') || '-17.7833');
+    const lng = parseFloat(mapEl.getAttribute('data-lng') || '-63.1821');
+    const title = mapEl.getAttribute('data-title') || 'Inmueble RE/MAX';
+    const address = mapEl.getAttribute('data-address') || 'Bolivia';
+    const price = mapEl.getAttribute('data-price') || '';
+
+    const map = L.map('detailPropertyMap', {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView([lat, lng], 15);
+
+    L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      attribution: '&copy; Google Maps',
+      maxZoom: 20
+    }).addTo(map);
+
+    const customPin = L.divIcon({
+      className: 'detail-map-pin-icon',
+      html: `
+        <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
+          <div style="background: #dc2626; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4); white-space: nowrap; border: 2px solid #ffffff;">
+            USD ${price}
+          </div>
+          <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 9px solid #dc2626; margin-top: -1px;"></div>
+        </div>
+      `,
+      iconSize: [120, 45],
+      iconAnchor: [60, 45]
+    });
+
+    const marker = L.marker([lat, lng], { icon: customPin }).addTo(map);
+    marker.bindPopup(`
+      <div style="font-family: system-ui, sans-serif; padding: 4px;">
+        <strong style="color: #0f172a; font-size: 13px; display: block; margin-bottom: 2px;">${title}</strong>
+        <span style="color: #64748b; font-size: 11px;">${address}</span>
+      </div>
+    `).openPopup();
+  });
+</script>

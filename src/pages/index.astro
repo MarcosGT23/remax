@@ -1,0 +1,1758 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FaqSection from "../components/FaqSection.astro";
+
+const oficinasLogos = [
+  { name: "RE/MAX Agrourbano", src: "/images/oficinas/agrourbano.png" },
+  { name: "RE/MAX At Work", src: "/images/oficinas/at_work.png" },
+  { name: "RE/MAX Black", src: "/images/oficinas/black.png" },
+  { name: "RE/MAX Bussine", src: "/images/oficinas/bussine.png" },
+  { name: "RE/MAX Capital", src: "/images/oficinas/capital.png" },
+  { name: "RE/MAX Elite", src: "/images/oficinas/elite.png" },
+  { name: "RE/MAX Emporio", src: "/images/oficinas/emporio.png" },
+  { name: "RE/MAX Emprende", src: "/images/oficinas/emprende.png" },
+  { name: "RE/MAX Essential", src: "/images/oficinas/essential.png" },
+  { name: "RE/MAX Express", src: "/images/oficinas/express.png" },
+  { name: "RE/MAX Fortaleza", src: "/images/oficinas/fortaleza.png" },
+  { name: "RE/MAX Futuro", src: "/images/oficinas/futuro.png" },
+  { name: "RE/MAX Impacto", src: "/images/oficinas/impacto1.png" },
+  {
+    name: "RE/MAX Impacto Rise",
+    src: "/images/oficinas/impacto_rise_black.png",
+  },
+  { name: "RE/MAX Infinity", src: "/images/oficinas/infinity.png" },
+  { name: "RE/MAX Inversiones", src: "/images/oficinas/inversiones.png" },
+  { name: "RE/MAX Legacy", src: "/images/oficinas/legacy.png" },
+  { name: "RE/MAX Magna", src: "/images/oficinas/magna.png" },
+  { name: "RE/MAX Norte", src: "/images/oficinas/norte.png" },
+  { name: "RE/MAX Nova", src: "/images/oficinas/nova.png" },
+  { name: "RE/MAX Origen", src: "/images/oficinas/origen.png" },
+  { name: "RE/MAX Patrimonio", src: "/images/oficinas/patrimonio.png" },
+  { name: "RE/MAX Plus", src: "/images/oficinas/plus.png" },
+  { name: "RE/MAX Premier", src: "/images/oficinas/premier.png" },
+  { name: "RE/MAX Premium", src: "/images/oficinas/premium.png" },
+  { name: "RE/MAX Rural", src: "/images/oficinas/rural.png" },
+  { name: "RE/MAX Unión", src: "/images/oficinas/union.png" },
+];
+---
+
+<Layout
+  title="RE/MAX Bolivia | Tu Red Inmobiliaria de Confianza"
+  description="Encuentra propiedades en Venta, Alquiler y Anticrético en Bolivia. Casas, departamentos, terrenos y locales comerciales con el respaldo de la red número uno del mundo."
+>
+  <Header />
+
+  <main class="main-wrapper">
+    <!-- HERO SECTION -->
+    <section class="section_hero">
+      <div class="section-gap hero">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="hero-wrapper">
+            <div class="hero-content-block">
+              <div class="hero-text-block">
+                <div class="hero-title-block">
+                  <h1 class="heading-style-1">
+                    Encuentra la Propiedad de tus Sueños
+                  </h1>
+                </div>
+                <div class="hero-summary-block">
+                  <p class="paragraph-small">
+                    La red inmobiliaria más grande del mundo a tu servicio.
+                    Casas, departamentos, terrenos y locales comerciales en
+                    venta, alquiler y anticrético en toda Bolivia.
+                  </p>
+                </div>
+                <div class="hero-button-block">
+                  <a
+                    data-wf--primary-button--variant="variant-1"
+                    href="/inmuebles"
+                    class="primary-button w-inline-block"
+                  >
+                    <div class="button-text-block">
+                      <div class="button-text is-1">Buscar Inmuebles</div>
+                      <div class="button-text is-2">Buscar Inmuebles</div>
+                    </div>
+                  </a>
+                  <a
+                    data-wf--secondary-button--variant="varient-1"
+                    href="/vender"
+                    class="secondary-button w-inline-block"
+                  >
+                    <div class="button-text-block">
+                      <div class="button-text is-1">¿Quieres Vender?</div>
+                      <div class="button-text is-2">Consignar Propiedad</div>
+                    </div>
+                    <div class="button-icon-block">
+                      <div class="button-icon is-1 w-embed">
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clip-path="url(#clip0_4113_220)">
+                            <path
+                              d="M17 6.99951L7 16.9995"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M8 6.99951H17V15.9995"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_4113_220">
+                              <rect
+                                width="24"
+                                height="24"
+                                fill="currentColor"
+                                transform="matrix(-1 0 0 1 24 0)"></rect>
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div class="button-icon is-2 w-embed">
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clip-path="url(#clip0_4113_220)">
+                            <path
+                              d="M17 6.99951L7 16.9995"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M8 6.99951H17V15.9995"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_4113_220">
+                              <rect
+                                width="24"
+                                height="24"
+                                fill="currentColor"
+                                transform="matrix(-1 0 0 1 24 0)"></rect>
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="hero-rating-block">
+                  <div class="hero-rating-avatar-block">
+                    <img
+                      src="/images/avatar-01_1avatar-01.png"
+                      loading="lazy"
+                      data-w-id="bba29235-7894-645a-f58b-800ebbf8163f"
+                      alt="hero-rating-avatar"
+                      class="hero-rating-avatar is-1"
+                    />
+                    <img
+                      src="/images/avatar-02_1avatar-02.png"
+                      loading="lazy"
+                      data-w-id="86ab84a2-50e5-770d-7528-a3ed66775a60"
+                      alt="hero-rating-avatar"
+                      class="hero-rating-avatar"
+                    />
+                    <img
+                      src="/images/avatar-03_1avatar-03.png"
+                      loading="lazy"
+                      data-w-id="e92836f1-7e70-77a7-642d-811e892ce3d3"
+                      alt="hero-rating-avatar"
+                      class="hero-rating-avatar"
+                    />
+                  </div>
+                  <div
+                    data-w-id="0003ea8e-4c4d-aea0-f7e3-022c6494bd7d"
+                    class="hero-rating-info-block"
+                  >
+                    <div class="hero-rating-star-block">
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="hero-rating-star"
+                        class="hero-rating-star"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="hero-rating-star"
+                        class="hero-rating-star"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="hero-rating-star"
+                        class="hero-rating-star"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="hero-rating-star"
+                        class="hero-rating-star"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="hero-rating-star"
+                        class="hero-rating-star"
+                      />
+                    </div>
+                    <p class="paragraph-xxsmall text-color-title-color">
+                      Rated 4.9/5 from 1200+ reviews
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-image-block">
+                <img
+                  class="hero-image"
+                  src="/images/recursos/recursos-2.png"
+                  alt="hero-image"
+                  data-w-id="fa253f3b-bffc-1529-2c0a-22b66679330b"
+                  loading="lazy"
+                />
+                <div
+                  data-w-id="781d5bbf-4ec7-8035-2836-dd3b2aa9c813"
+                  class="hero-image-overlay"
+                >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRANDS LOGO SECTION -->
+    <section class="section_logo">
+      <div class="section-gap top-lg">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="logo-wrapper">
+            <div class="section-heading-block center-align">
+              <div class="section-title-block">
+                <div class="label-large text-align-center">
+                  Oficinas Santa Cruz
+                </div>
+              </div>
+            </div>
+            <div
+              data-w-id="c63ebb52-0317-ce7d-c699-ec206859a84d"
+              class="logo-content-block"
+            >
+              <div class="sponsor-logo-row">
+                {
+                  oficinasLogos.map((office) => (
+                    <img
+                      src={office.src}
+                      loading="lazy"
+                      alt={office.name}
+                      title={office.name}
+                      class="sponsor-logo"
+                    />
+                  ))
+                }
+              </div>
+              <div class="sponsor-logo-row" aria-hidden="true">
+                {
+                  oficinasLogos.map((office) => (
+                    <img
+                      src={office.src}
+                      loading="lazy"
+                      alt={office.name}
+                      title={office.name}
+                      class="sponsor-logo"
+                    />
+                  ))
+                }
+              </div>
+              <div class="logo-overlay-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section data-wf--section-service--variant="base" class="section_service">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="service-wrapper">
+            <div class="service-heading-block">
+              <div class="section-title-block">
+                <h2 class="heading-style-2">
+                  Construction <span class="heading-style-2-ht">Services</span>
+                </h2>
+              </div>
+              <div class="section-summary-block top-space-lg mobile-sm">
+                <p class="paragraph-small">
+                  Professional roofing solutions for every type of building
+                </p>
+              </div>
+            </div>
+            <div
+              data-w-id="40031a16-0ef6-ea08-1a16-c5b8c6ec1c26"
+              class="service-content-block"
+            >
+              <!-- Commercial Roofing -->
+              <div class="service-collection-block w-dyn-list">
+                <div role="list" class="service-collection-list w-dyn-items">
+                  <div
+                    role="listitem"
+                    class="service-collection-item w-dyn-item"
+                  >
+                    <div class="service-item-block">
+                      <div
+                        data-w-id="40031a16-0ef6-ea08-1a16-c5b8c6ec1c2b"
+                        class="service-item-title-block is-1"
+                      >
+                        <div class="service-title-text-block">
+                          <div class="service-item-icon-block">
+                            <img
+                              src="/images/6a5717b9f45479999f4faae8_Service-Icon-3.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-item-icon is-1"
+                            />
+                            <img
+                              src="/images/6a5717b9f45479999f4faae9_Service-Icon-2.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-hover-icon is-1"
+                            />
+                          </div>
+                          <h3 class="label-medium is-1">Commercial Roofing</h3>
+                        </div>
+                        <a
+                          href="/services"
+                          class="service-title-icon-block w-inline-block"
+                        >
+                          <div class="service-title-icon is-1 w-embed">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g clip-path="url(#clip0_152_190)">
+                                <path
+                                  d="M22.6663 9.33398L9.33301 22.6673"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                                <path
+                                  d="M10.667 9.33398H22.667V21.334"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_152_190">
+                                  <rect
+                                    width="32"
+                                    height="32"
+                                    fill="currentColor"></rect>
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="service-item-content-block is-1">
+                        <div class="service-item-image-block">
+                          <div class="service-item-single-image-block is-1">
+                            <img
+                              loading="lazy"
+                              src="/images/6992e40e90cf6ffecbb28d2c_service-card-two-image-1.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                            <div class="image-overlay"></div>
+                          </div>
+                          <div class="service-item-single-image-block is-2">
+                            <img
+                              loading="lazy"
+                              src="/images/6992e4162373a597380cd73c_service-card-two-image-2.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                            <div class="image-overlay"></div>
+                          </div>
+                        </div>
+                        <div class="service-item-text-block">
+                          <h3 class="heading-style-5">Commercial Roofing</h3>
+                          <p class="paragraph-small">
+                            Our industrial solutions prioritize safety and
+                            structural integrity, using high-performance
+                            materials designed for longevity in demanding
+                            environments.
+                          </p>
+                          <a href="/services" class="service-link-button"
+                            >View Service</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Industrial Roofing -->
+              <div class="service-collection-block w-dyn-list">
+                <div role="list" class="service-collection-list w-dyn-items">
+                  <div
+                    role="listitem"
+                    class="service-collection-item w-dyn-item"
+                  >
+                    <div class="service-item-block">
+                      <div
+                        data-w-id="40031a16-0ef6-ea08-1a16-c5b8c6ec1c43"
+                        class="service-item-title-block is-2"
+                      >
+                        <div class="service-title-text-block">
+                          <div class="service-item-icon-block">
+                            <img
+                              src="/images/6a5717b9f45479999f4faaea_Service-Icon-5.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-item-icon is-2"
+                            />
+                            <img
+                              src="/images/6a5717b9f45479999f4faaeb_Service-Icon-4.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-hover-icon is-2"
+                            />
+                          </div>
+                          <h3 class="label-medium is-2">Industrial Roofing</h3>
+                        </div>
+                        <a
+                          href="/services"
+                          class="service-title-icon-block w-inline-block"
+                        >
+                          <div class="service-title-icon is-2 w-embed">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g clip-path="url(#clip0_152_190)">
+                                <path
+                                  d="M22.6663 9.33398L9.33301 22.6673"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                                <path
+                                  d="M10.667 9.33398H22.667V21.334"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_152_190">
+                                  <rect
+                                    width="32"
+                                    height="32"
+                                    fill="currentColor"></rect>
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="service-item-content-block is-2">
+                        <div class="service-item-image-block">
+                          <div class="service-item-single-image-block is-1">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faae5_service-card-three-image-1.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                          <div class="service-item-single-image-block is-2">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faae4_service-card-three-image-2.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                        </div>
+                        <div class="service-item-text-block">
+                          <h3 class="heading-style-5">Industrial Roofing</h3>
+                          <p class="paragraph-small">
+                            We provide comprehensive flat and sloped roofing
+                            systems for office buildings, warehouses, and
+                            commercial complexes with minimal business
+                            interruption.
+                          </p>
+                          <a href="/services" class="service-link-button"
+                            >View Service</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Residential Roofing -->
+              <div class="service-collection-block w-dyn-list">
+                <div role="list" class="service-collection-list w-dyn-items">
+                  <div
+                    role="listitem"
+                    class="service-collection-item w-dyn-item"
+                  >
+                    <div class="service-item-block">
+                      <div
+                        data-w-id="40031a16-0ef6-ea08-1a16-c5b8c6ec1c5b"
+                        class="service-item-title-block is-3"
+                      >
+                        <div class="service-title-text-block">
+                          <div class="service-item-icon-block">
+                            <img
+                              src="/images/6a5717b9f45479999f4faae6_Service-Icon-1.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-item-icon is-3"
+                            />
+                            <img
+                              src="/images/6a5717b9f45479999f4faae7_Service-Icon-8.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-hover-icon is-3"
+                            />
+                          </div>
+                          <h3 class="label-medium is-3">Residential Roofing</h3>
+                        </div>
+                        <a
+                          href="/services/residential-roofing"
+                          class="service-title-icon-block w-inline-block"
+                        >
+                          <div class="service-title-icon is-3 w-embed">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g clip-path="url(#clip0_152_190)">
+                                <path
+                                  d="M22.6663 9.33398L9.33301 22.6673"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                                <path
+                                  d="M10.667 9.33398H22.667V21.334"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_152_190">
+                                  <rect
+                                    width="32"
+                                    height="32"
+                                    fill="currentColor"></rect>
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="service-item-content-block is-3">
+                        <div class="service-item-image-block">
+                          <div class="service-item-single-image-block is-1">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faad4_service-card-one-image-1.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                          <div class="service-item-single-image-block is-2">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faaf0_Container.png"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                        </div>
+                        <div class="service-item-text-block">
+                          <h3 class="heading-style-5">Residential Roofing</h3>
+                          <p class="paragraph-small">
+                            Our roofing services are designed to deliver
+                            durable, long-lasting protection with minimal
+                            hassle. From inspections to installations.
+                          </p>
+                          <a
+                            href="/services/residential-roofing"
+                            class="service-link-button">View Service</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Retail Roofing -->
+              <div class="service-collection-block w-dyn-list">
+                <div role="list" class="service-collection-list w-dyn-items">
+                  <div
+                    role="listitem"
+                    class="service-collection-item w-dyn-item"
+                  >
+                    <div class="service-item-block">
+                      <div
+                        data-w-id="40031a16-0ef6-ea08-1a16-c5b8c6ec1c73"
+                        class="service-item-title-block is-4"
+                      >
+                        <div class="service-title-text-block">
+                          <div class="service-item-icon-block">
+                            <img
+                              src="/images/6a5717b9f45479999f4faaec_Service-Icon-7.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-item-icon is-4"
+                            />
+                            <img
+                              src="/images/6a5717b9f45479999f4faaed_Service-Icon-6.svg"
+                              loading="lazy"
+                              alt=""
+                              class="service-hover-icon is-4"
+                            />
+                          </div>
+                          <h3 class="label-medium is-4">Retail Roofing</h3>
+                        </div>
+                        <a
+                          href="/services"
+                          class="service-title-icon-block w-inline-block"
+                        >
+                          <div class="service-title-icon is-4 w-embed">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g clip-path="url(#clip0_152_190)">
+                                <path
+                                  d="M22.6663 9.33398L9.33301 22.6673"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                                <path
+                                  d="M10.667 9.33398H22.667V21.334"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_152_190">
+                                  <rect
+                                    width="32"
+                                    height="32"
+                                    fill="currentColor"></rect>
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="service-item-content-block is-4">
+                        <div class="service-item-image-block">
+                          <div class="service-item-single-image-block is-1">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faad4_service-card-one-image-1.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                          <div class="service-item-single-image-block is-2">
+                            <img
+                              loading="lazy"
+                              src="/images/6a5717b9f45479999f4faad5_service-card-one-image-2.jpg"
+                              alt="service-item-single-image"
+                              class="service-item-single-image"
+                            />
+                          </div>
+                        </div>
+                        <div class="service-item-text-block">
+                          <h3 class="heading-style-5">Retail Roofing</h3>
+                          <p class="paragraph-small">
+                            We balance aesthetics with durability, providing
+                            roofing systems that protect your inventory and
+                            customers while maintaining your building's curb
+                            appeal.
+                          </p>
+                          <a href="/services" class="service-link-button"
+                            >View Service</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="section_about">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="about-wrapper">
+            <div
+              class="section-heading-block top-space-between bottom-pd-border"
+            >
+              <div class="section-title-block max-width-430 mobile-large">
+                <h2 class="heading-style-2 text-color-white">
+                  About Our <span class="heading-style-2-wht"
+                    >Roofing Services</span
+                  >
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-600 mobile-lg">
+                <p class="paragraph-small text-color-white">
+                  With over 20 years of experience in the roofing industry,
+                  we've built a reputation for excellence, reliability, and
+                  superior craftsmanship. Our team of certified professionals is
+                  dedicated to protecting your home with the highest quality
+                  roofing solutions.
+                </p>
+              </div>
+              <div
+                data-w-id="af6d3573-d85d-b48d-218e-6bb27df50151"
+                class="liner-border-block"
+              >
+              </div>
+            </div>
+            <div class="about-content-block">
+              <div
+                data-w-id="074dfd88-0e20-4aa3-e0de-cdf0b3bfa194"
+                class="about-image-block"
+              >
+                <img
+                  src="/images/about-image-1.jpg"
+                  loading="lazy"
+                  alt="about-image"
+                  class="about-image"
+                />
+              </div>
+              <div
+                data-w-id="074dfd88-0e20-4aa3-e0de-cdf0b3bfa195"
+                class="about-stat-block"
+              >
+                <div class="about-stat-title-block">
+                  <div class="label-large text-color-white">
+                    Projects Completed
+                  </div>
+                </div>
+                <div class="about-stat-content-block">
+                  <div class="about-stat-number-block">
+                    <h2 class="counter-number">1500+</h2>
+                  </div>
+                  <div class="paragraph-small text-color-white">
+                    We provide reliable roofing solutions built on quality
+                  </div>
+                </div>
+              </div>
+              <div
+                data-w-id="8da08824-b543-a5f9-f6b9-089c02e23343"
+                class="about-stat-block"
+              >
+                <div class="about-stat-title-block">
+                  <div class="label-large text-color-white">
+                    Years Experience
+                  </div>
+                </div>
+                <div class="about-stat-content-block">
+                  <div class="about-stat-number-block">
+                    <h2 class="counter-number">20+ Yr</h2>
+                  </div>
+                  <div class="paragraph-small text-color-white">
+                    Our certified team delivers dependable roofing solutions
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERTISE SECTION -->
+    <section class="section_expertise">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="expertise-wrapper">
+            <div class="section-heading-block bottom-space-between">
+              <div class="section-title-block max-width-380 mobile-lg">
+                <h2 class="heading-style-2">
+                  Experts in <span class="heading-style-2-ht"
+                    >Metal Roofing</span
+                  >
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-480">
+                <p class="paragraph-small">
+                  Expert residential &amp; commercial roofing services backed by
+                  quality materials, certified professionals, and long-term
+                  warranties.
+                </p>
+              </div>
+            </div>
+            <div class="expertise-content-block">
+              <!-- Item 01 -->
+              <div
+                data-w-id="48e9cf60-b0ea-5cec-2617-dfbc0f42ef15"
+                class="expertise-card-block"
+              >
+                <div class="expertise-card-content-block">
+                  <div class="expertise-card-number-block">
+                    <div
+                      class="paragraph-small text-color-black text-weight-semi-bold"
+                    >
+                      01
+                    </div>
+                  </div>
+                  <div class="expertise-card-text-block">
+                    <div class="expertise-card-heading-block">
+                      <h3 class="heading-style-4">Corrugated and Ribbed</h3>
+                    </div>
+                    <div class="expertise-card-summary-block">
+                      <p class="paragraph-small top-pd">
+                        Our corrugated and ribbed metal panel systems offer
+                        exceptional strength-to-weight ratios, superior water
+                        shedding capabilities, and enhanced structural
+                        integrity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="expertise-card-image-block">
+                  <div class="expertise-card-image-inner">
+                    <img
+                      src="/images/experts-image-4.jpg"
+                      loading="lazy"
+                      alt="expertise-card-image"
+                      class="expertise-card-image"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 02 -->
+              <div
+                data-w-id="365aba3c-d2e2-3463-3579-512c9eb91334"
+                class="expertise-card-block"
+              >
+                <div class="expertise-card-content-block">
+                  <div class="expertise-card-number-block">
+                    <div
+                      class="paragraph-small text-color-black text-weight-semi-bold"
+                    >
+                      02
+                    </div>
+                  </div>
+                  <div class="expertise-card-text-block">
+                    <div class="expertise-card-heading-block">
+                      <h3 class="heading-style-4">Blue Scope Certified</h3>
+                    </div>
+                    <div class="expertise-card-summary-block">
+                      <p class="paragraph-small top-pd">
+                        Our corrugated and ribbed metal panel systems offer
+                        exceptional strength-to-weight ratios, superior water
+                        shedding capabilities, and enhanced structural
+                        integrity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="expertise-card-image-block">
+                  <div class="expertise-card-image-inner">
+                    <img
+                      src="/images/experts-image-1.jpg"
+                      loading="lazy"
+                      alt="expertise-card-image"
+                      class="expertise-card-image"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 03 -->
+              <div
+                data-w-id="e13135f6-16aa-db55-233d-b338cf0063c0"
+                class="expertise-card-block"
+              >
+                <div class="expertise-card-content-block">
+                  <div class="expertise-card-number-block">
+                    <div
+                      class="paragraph-small text-color-black text-weight-semi-bold"
+                    >
+                      03
+                    </div>
+                  </div>
+                  <div class="expertise-card-text-block">
+                    <div class="expertise-card-heading-block">
+                      <h3 class="heading-style-4">Metal Roof design</h3>
+                    </div>
+                    <div class="expertise-card-summary-block">
+                      <p class="paragraph-small top-pd">
+                        Our corrugated and ribbed metal panel systems offer
+                        exceptional strength-to-weight ratios, superior water
+                        shedding capabilities, and enhanced structural
+                        integrity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="expertise-card-image-block">
+                  <div class="expertise-card-image-inner">
+                    <img
+                      src="/images/experts-image-3.jpg"
+                      loading="lazy"
+                      alt="expertise-card-image"
+                      class="expertise-card-image"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 04 -->
+              <div
+                data-w-id="5b05d137-ec0a-5b4e-51da-77d44533468a"
+                class="expertise-card-block last"
+              >
+                <div class="expertise-card-content-block">
+                  <div class="expertise-card-number-block">
+                    <div
+                      class="paragraph-small text-color-black text-weight-semi-bold"
+                    >
+                      04
+                    </div>
+                  </div>
+                  <div class="expertise-card-text-block">
+                    <div class="expertise-card-heading-block">
+                      <h3 class="heading-style-4">Energy Cool Metal Roofing</h3>
+                    </div>
+                    <div class="expertise-card-summary-block">
+                      <p class="paragraph-small top-pd">
+                        Our corrugated and ribbed metal panel systems offer
+                        exceptional strength-to-weight ratios, superior water
+                        shedding capabilities, and enhanced structural
+                        integrity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="expertise-card-image-block">
+                  <div class="expertise-card-image-inner">
+                    <img
+                      src="/images/experts-image-2.jpg"
+                      loading="lazy"
+                      alt="expertise-card-image"
+                      class="expertise-card-image"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section id="section_process" class="section_process">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="process-wrapper">
+            <div class="section-heading-block bottom-space-between">
+              <div class="section-title-block max-width-430">
+                <h2 class="heading-style-2">
+                  Our Roofing <span class="heading-style-2-ht">Process</span>
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-300">
+                <p class="paragraph-small">
+                  A streamlined, transparent process designed for your peace of
+                  mind
+                </p>
+              </div>
+            </div>
+            <div class="process-content-block is-desktop">
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9bd"
+                class="process-card-block image"
+              >
+                <div class="process-card-image-block">
+                  <img
+                    loading="lazy"
+                    src="/images/process-card-image.jpg"
+                    alt="process-card-image"
+                    class="process-card-image"
+                  />
+                </div>
+              </div>
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9c0"
+                class="process-card-block is-1"
+              >
+                <div class="process-card-content-block is-1">
+                  <div class="process-card-top-block">
+                    <div class="process-card-icon-block">
+                      <img
+                        loading="lazy"
+                        src="/images/Icon.svg"
+                        alt="process-card-icon"
+                        class="process-card-icon"
+                      />
+                    </div>
+                    <div class="label-medium">Step 1</div>
+                  </div>
+                  <div class="process-card-bottom-block">
+                    <div class="label-large">Initial Consultation</div>
+                    <p class="paragraph-small">
+                      Contact us for a free consultation. We discuss your needs,
+                      timeline, and budget.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9cc"
+                class="process-card-block is-1"
+              >
+                <div class="process-card-content-block is-1">
+                  <div class="process-card-top-block">
+                    <div class="process-card-icon-block">
+                      <img
+                        loading="lazy"
+                        src="/images/Icon-1.svg"
+                        alt="process-card-icon"
+                        class="process-card-icon"
+                      />
+                    </div>
+                    <div class="label-medium">Step 2</div>
+                  </div>
+                  <div class="process-card-bottom-block">
+                    <div class="label-large">Free Inspection</div>
+                    <p class="paragraph-small">
+                      Contact us for a free consultation. We discuss your needs,
+                      timeline, and budget.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9d8"
+                class="process-card-block is-1"
+              >
+                <div class="process-card-content-block is-1">
+                  <div class="process-card-top-block">
+                    <div class="process-card-icon-block">
+                      <img
+                        loading="lazy"
+                        src="/images/Icon-2.svg"
+                        alt="process-card-icon"
+                        class="process-card-icon"
+                      />
+                    </div>
+                    <div class="label-medium">Step 3</div>
+                  </div>
+                  <div class="process-card-bottom-block">
+                    <div class="label-large">Detailed Quote</div>
+                    <p class="paragraph-small">
+                      Contact us for a free consultation. We discuss your needs,
+                      timeline, and budget.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9e4"
+                class="process-card-block is-1"
+              >
+                <div class="process-card-content-block is-1">
+                  <div class="process-card-top-block">
+                    <div class="process-card-icon-block">
+                      <img
+                        loading="lazy"
+                        src="/images/Icon-3.svg"
+                        alt="process-card-icon"
+                        class="process-card-icon"
+                      />
+                    </div>
+                    <div class="label-medium">Step 4</div>
+                  </div>
+                  <div class="process-card-bottom-block">
+                    <div class="label-large">Professional Installation</div>
+                    <p class="paragraph-small">
+                      Contact us for a free consultation. We discuss your needs,
+                      timeline, and budget.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-w-id="817a2947-86af-0e34-9f4d-9bbcfaa9d9f0"
+                class="process-card-block is-1"
+              >
+                <div class="process-card-content-block is-1">
+                  <div class="process-card-top-block">
+                    <div class="process-card-icon-block">
+                      <img
+                        loading="lazy"
+                        src="/images/Icon-4.svg"
+                        alt="process-card-icon"
+                        class="process-card-icon"
+                      />
+                    </div>
+                    <div class="label-medium">Step 5</div>
+                  </div>
+                  <div class="process-card-bottom-block">
+                    <div class="label-large">Quality Assurance</div>
+                    <p class="paragraph-small">
+                      Contact us for a free consultation. We discuss your needs,
+                      timeline, and budget.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE US SECTION -->
+    <section class="section_why-choose">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="why-choose-wrapper">
+            <div class="section-heading-block bottom-space-between">
+              <div class="section-title-block max-width-300">
+                <h2 class="heading-style-2 text-color-white">
+                  Why <span class="heading-style-2-wht">Choose Us</span>
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-500">
+                <p class="paragraph-small text-color-white">
+                  We're committed to delivering exceptional roofing services
+                  that protect your home and exceed your expectations.
+                </p>
+              </div>
+            </div>
+            <div class="why-choose-content-block">
+              <div class="why-choose-image-block">
+                <img
+                  src="/images/why-choose-image.jpg"
+                  loading="lazy"
+                  alt="why-choose-image"
+                  class="why-choose-image"
+                />
+                <div class="image-overlay color-white"></div>
+              </div>
+              <div class="why-choose-cards-block">
+                <div class="why-choose-single-card-block">
+                  <div class="why-choose-card-content-block">
+                    <div class="why-choose-card-icon-block">
+                      <img
+                        src="/images/Icon_1.svg"
+                        loading="lazy"
+                        alt="why-choose-card-icon"
+                        class="why-choose-card-icon"
+                      />
+                    </div>
+                    <div class="why-choose-card-text-block">
+                      <div class="label-large text-color-white mobile-sm">
+                        Trusted Experts
+                      </div>
+                      <p class="paragraph-xsmall text-color-white">
+                        Certified professionals with years of experience
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="why-choose-single-card-block">
+                  <div class="why-choose-card-content-block">
+                    <div class="why-choose-card-icon-block">
+                      <img
+                        src="/images/Icon-1_1.svg"
+                        loading="lazy"
+                        alt="why-choose-card-icon"
+                        class="why-choose-card-icon"
+                      />
+                    </div>
+                    <div class="why-choose-card-text-block">
+                      <div class="label-large text-color-white mobile-sm">
+                        Affordable Pricing
+                      </div>
+                      <p class="paragraph-xsmall text-color-white">
+                        Competitive rates without compromising quality
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="why-choose-single-card-block">
+                  <div class="why-choose-card-content-block">
+                    <div class="why-choose-card-icon-block">
+                      <img
+                        src="/images/Icon-2_1.svg"
+                        loading="lazy"
+                        alt="why-choose-card-icon"
+                        class="why-choose-card-icon"
+                      />
+                    </div>
+                    <div class="why-choose-card-text-block">
+                      <div class="label-large text-color-white mobile-sm">
+                        Premium Materials
+                      </div>
+                      <p class="paragraph-xsmall text-color-white">
+                        Only the highest quality roofing materials
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="why-choose-single-card-block is-4">
+                  <div class="why-choose-card-content-block">
+                    <div class="why-choose-card-icon-block">
+                      <img
+                        src="/images/Icon-3_1.svg"
+                        loading="lazy"
+                        alt="why-choose-card-icon"
+                        class="why-choose-card-icon"
+                      />
+                    </div>
+                    <div class="why-choose-card-text-block">
+                      <div class="label-large text-color-white mobile-sm">
+                        Long-Term Warranty
+                      </div>
+                      <p class="paragraph-xsmall text-color-white">
+                        Comprehensive coverage for your peace of mind
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR WORK SHOWCASE SECTION -->
+    <section class="section_our-work">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="our-work-wrapper">
+            <div class="section-heading-block bottom-space-between">
+              <div class="section-title-block max-width-300">
+                <h2 class="heading-style-2">
+                  Our Work <span class="heading-style-2-ht">Showcase</span>
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-400">
+                <p class="paragraph-small">
+                  Browse our portfolio of completed roofing projects across
+                  Brisbane
+                </p>
+              </div>
+            </div>
+            <div class="our-work-content-block is-desktop">
+              <div class="our-work-collection-block w-dyn-list">
+                <div role="list" class="our-work-collection-list w-dyn-items">
+                  <div
+                    role="listitem"
+                    class="our-work-collection-item w-dyn-item"
+                  >
+                    <div class="our-work-item-block">
+                      <a
+                        href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                        class="our-work-item-image-block w-inline-block"
+                      >
+                        <img
+                          src="/images/6a5717b9f45479999f4faad2_our-work-thumbnail-1.jpg"
+                          loading="lazy"
+                          alt="our-work-item-thumbnail"
+                          class="our-work-item-thumbnail"
+                        />
+                      </a>
+                      <div class="our-work-item-content-block">
+                        <div class="our-work-item-text-block">
+                          <div class="our-work-item-tag">Homeowners</div>
+                          <a
+                            href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                            class="our-work-item-title-block w-inline-block"
+                          >
+                            <h3 class="label-xlarge hover">
+                              Families and individuals who want secure,
+                              long-lasting roofs
+                            </h3>
+                          </a>
+                          <p>
+                            Urban residential communities where we support
+                            families needing durable, long-term roof protection.
+                          </p>
+                        </div>
+                        <div class="our-work-item-button-block">
+                          <a
+                            href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                            class="link-button w-inline-block"
+                          >
+                            <div class="button-text lg">Read More</div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    role="listitem"
+                    class="our-work-collection-item w-dyn-item"
+                  >
+                    <div class="our-work-item-block">
+                      <a
+                        href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                        class="our-work-item-image-block w-inline-block"
+                      >
+                        <img
+                          src="/images/6a5717b9f45479999f4faad0_our-work-thumbnail-2.jpg"
+                          loading="lazy"
+                          alt="our-work-item-thumbnail"
+                          class="our-work-item-thumbnail"
+                        />
+                      </a>
+                      <div class="our-work-item-content-block">
+                        <div class="our-work-item-text-block">
+                          <div class="our-work-item-tag">
+                            Commercial Property
+                          </div>
+                          <a
+                            href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                            class="our-work-item-title-block w-inline-block"
+                          >
+                            <h3 class="label-xlarge hover">
+                              Businesses looking for strong, low-maintenance
+                              roofing
+                            </h3>
+                          </a>
+                          <p>
+                            Growing suburban neighborhoods with newly built
+                            homes requiring professional installation and
+                            finishing.
+                          </p>
+                        </div>
+                        <div class="our-work-item-button-block">
+                          <a
+                            href="/our-works/families-and-individuals-who-want-secure-long-lasting-roofs"
+                            class="link-button w-inline-block"
+                          >
+                            <div class="button-text lg">Read More</div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="section_testimonial">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="testimonial-wrapper">
+            <div class="section-heading-block bottom-space-between">
+              <div class="section-title-block max-width-380 mobile-lg">
+                <h2 class="heading-style-2">
+                  What Our <span class="heading-style-2-ht">Customers Say</span>
+                </h2>
+              </div>
+              <div class="section-summary-block max-width-400">
+                <p class="paragraph-small">
+                  Don't just take our word for it—hear from our satisfied
+                  clients
+                </p>
+              </div>
+            </div>
+            <div class="testimonial-content-block">
+              <div class="testimonial-left-block">
+                <div class="testimonial-rating-block">
+                  <div class="client-review-block">
+                    <div class="label-large text-color-white">
+                      Clients Review (95+)
+                    </div>
+                  </div>
+                  <div class="rating-info-block">
+                    <div class="heading-style-1 text-color-white">4.9</div>
+                    <div class="rating-star-block">
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="star"
+                        class="rating-star-icon"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="star"
+                        class="rating-star-icon"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="star"
+                        class="rating-star-icon"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="star"
+                        class="rating-star-icon"
+                      />
+                      <img
+                        src="/images/Star-Icon.svg"
+                        loading="lazy"
+                        alt="star"
+                        class="rating-star-icon"
+                      />
+                    </div>
+                    <p class="paragraph-small text-color-white">
+                      Trusted by hundreds of happy clients - our 4.9-star rating
+                      reflects top-quality of roofing.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-right-block">
+                <div class="testimonial-card-block">
+                  <div class="testimonial-card-content-block">
+                    <p
+                      class="paragraph-regular text-weight-regular title-text-color"
+                    >
+                      Fast, reliable, and excellent workmanship. They
+                      transformed our roof in just a few days!
+                    </p>
+                  </div>
+                  <div class="testimonial-card-client-block">
+                    <div class="testimonial-client-avatar-block">
+                      <img
+                        src="/images/avatar-01_1avatar-01.png"
+                        loading="lazy"
+                        alt="avatar"
+                        class="testimonial-client-avatar"
+                      />
+                    </div>
+                    <div class="testimonial-client-info-block">
+                      <div class="label-medium">Michael Chen</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="testimonial-card-block">
+                  <div class="testimonial-card-content-block">
+                    <p
+                      class="paragraph-regular text-weight-regular title-text-color"
+                    >
+                      Professional team, fair pricing, and quality results.
+                      Highly recommend for any roofing needs.
+                    </p>
+                  </div>
+                  <div class="testimonial-card-client-block">
+                    <div class="testimonial-client-avatar-block">
+                      <img
+                        src="/images/avatar-02_1avatar-02.png"
+                        loading="lazy"
+                        alt="avatar"
+                        class="testimonial-client-avatar"
+                      />
+                    </div>
+                    <div class="testimonial-client-info-block">
+                      <div class="label-medium">Wade Warren</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <FaqSection />
+
+    <!-- CONTACT CTA SECTION -->
+    <section data-wf--section-cta--variant="varient-1" class="section_cta">
+      <div class="section-gap">
+        <div class="w-layout-blockcontainer container-main w-container">
+          <div class="cta-wrapper">
+            <div class="get-in-touch-block">
+              <div class="get-in-touch-heding-block">
+                <h2
+                  data-w-id="3f48da68-b942-c2ea-7828-868613b776a6"
+                  class="heading-style-2 text-color-white"
+                >
+                  Get in Touch
+                </h2>
+                <p
+                  data-w-id="3f48da68-b942-c2ea-7828-868613b776a8"
+                  class="paragraph-small text-color-white"
+                >
+                  Ready to start your roofing project? Contact us today for a
+                  free consultation and quote.
+                </p>
+              </div>
+              <div
+                data-w-id="3f48da68-b942-c2ea-7828-868613b776aa"
+                class="get-in-touch-content-block"
+              >
+                <div class="get-in-touch-single-block">
+                  <div class="get-in-touch-text-block">
+                    <div class="label-medium text-color-white">Phone</div>
+                    <a href="tel:+15551234567" class="get-in-touch-link hover"
+                      >+1 (555) 123-4567</a
+                    >
+                  </div>
+                </div>
+                <div class="get-in-touch-single-block">
+                  <div class="get-in-touch-text-block">
+                    <div class="label-medium text-color-white">Email</div>
+                    <a
+                      href="mailto:info@roofproservices.com"
+                      class="get-in-touch-link hover"
+                      >info@roofproservices.com</a
+                    >
+                  </div>
+                </div>
+                <div class="get-in-touch-single-block">
+                  <div class="get-in-touch-text-block">
+                    <div class="label-medium text-color-white">
+                      Business Hours
+                    </div>
+                    <div class="get-in-touch-link">
+                      Mon - Fri: 7:00 AM - 5:00 PM<br />Emergency available 24/7
+                    </div>
+                  </div>
+                </div>
+                <div class="get-in-touch-single-block">
+                  <div class="get-in-touch-text-block">
+                    <div class="label-medium text-color-white">Location</div>
+                    <div class="get-in-touch-link">
+                      123 Example Street, Suite 100
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              data-w-id="3f48da68-b942-c2ea-7828-868613b776cb"
+              class="contact-form-block w-form"
+            >
+              <form
+                id="email-form"
+                name="email-form"
+                method="get"
+                class="contact-form"
+                onsubmit="event.preventDefault(); alert('Submission received!');"
+              >
+                <div class="contact-form-content">
+                  <div class="contact-form-title-block">
+                    <h3 class="heading-style-3 text-weight-semi-bold">
+                      Contact Details
+                    </h3>
+                  </div>
+                  <div class="contact-form-row">
+                    <div class="form-field-block">
+                      <label for="Name" class="label-regular"
+                        >Your Full Name</label
+                      >
+                      <input
+                        class="form-text-field w-input"
+                        maxlength="256"
+                        name="Name"
+                        placeholder="Enter your name"
+                        type="text"
+                        id="Name"
+                        required=""
+                      />
+                    </div>
+                    <div class="form-field-block">
+                      <label for="email" class="label-regular"
+                        >Your Email Address</label
+                      >
+                      <input
+                        class="form-text-field w-input"
+                        maxlength="256"
+                        name="email"
+                        placeholder="Enter Email Address"
+                        type="email"
+                        id="email"
+                        required=""
+                      />
+                    </div>
+                  </div>
+                  <div class="contact-form-row">
+                    <div class="form-field-block">
+                      <label for="Phone" class="label-regular"
+                        >Your Phone Number</label
+                      >
+                      <input
+                        class="form-text-field w-input"
+                        maxlength="256"
+                        name="Phone"
+                        placeholder="Enter Phone Number"
+                        type="tel"
+                        id="Phone"
+                        required=""
+                      />
+                    </div>
+                    <div class="form-field-block">
+                      <label for="field-2" class="label-regular"
+                        >Service Required</label
+                      >
+                      <select
+                        id="field-2"
+                        name="field-2"
+                        class="form-text-field select w-select"
+                      >
+                        <option value="">None</option>
+                        <option value="First">Residential Roofing</option>
+                        <option value="Second">Commercial Roofing</option>
+                        <option value="Third">Industrial Roofing</option>
+                        <option value="Another option">Retail Roofing</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-field-block">
+                    <label for="field" class="label-regular">Message</label>
+                    <textarea
+                      id="field"
+                      name="field"
+                      maxlength="5000"
+                      placeholder="Write Message"
+                      class="form-text-field lg w-input"></textarea>
+                  </div>
+                  <div class="contact-form-button-block">
+                    <input
+                      type="submit"
+                      class="primary-button form w-button"
+                      value="Submit"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Seamless Infinite Office Logo Marquee Carousel */
+  .logo-content-block {
+    position: relative !important;
+    display: flex !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    padding: 20px 0 !important;
+    user-select: none !important;
+  }
+
+  .sponsor-logo-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 48px !important;
+    padding-right: 48px !important; /* Matches gap for seamless continuous loop */
+    flex-shrink: 0 !important;
+    will-change: transform !important;
+    animation: sponsorMarquee 115s linear infinite !important;
+  }
+
+  .logo-content-block:hover .sponsor-logo-row {
+    animation-play-state: paused !important;
+  }
+
+  .sponsor-logo {
+    height: 38px !important;
+    width: auto !important;
+    max-width: 160px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+    opacity: 0.88 !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .sponsor-logo:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px) scale(1.07) !important;
+  }
+
+  .logo-overlay-block {
+    position: absolute !important;
+    inset: 0% !important;
+    background-image: linear-gradient(
+      90deg,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0) 12%,
+      rgba(255, 255, 255, 0) 88%,
+      #ffffff 100%
+    ) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+  }
+
+  @keyframes sponsorMarquee {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+</style>

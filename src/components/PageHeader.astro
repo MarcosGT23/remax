@@ -1,0 +1,249 @@
+---
+// src/components/PageHeader.astro
+interface Props {
+  badge: string;
+  title: string;
+  subtitle?: string;
+  backLink?: string;
+  backText?: string;
+  compact?: boolean;
+}
+
+const {
+  badge,
+  title,
+  subtitle,
+  backLink,
+  backText = "Volver al Inicio",
+  compact = false
+} = Astro.props;
+---
+
+<section class={`section_breadcrumb ${compact ? 'is-compact' : ''}`}>
+  <div class="section-gap hero">
+    <div class="w-layout-blockcontainer container-main w-container">
+      <div class="breadcrumb-wrapper">
+        {backLink && (
+          <div class="breadcrumb-link-block">
+            <a href={backLink} class="link-button text-color-white w-inline-block">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="back-arrow-svg">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span class="button-text">{backText}</span>
+            </a>
+          </div>
+        )}
+        
+        <div class="breadcrumb-content-block">
+          <div class="breadcrumb-subtitle-block">
+            <span class="breadcrumb-subtitle">{badge}</span>
+          </div>
+          <div class="breadcrumb-title-block">
+            <h1 class="heading-style-2 text-color-white">{title}</h1>
+            {subtitle && <p class="paragraph-small text-color-light-slate">{subtitle}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Standard Page Breadcrumb section */
+  .section_breadcrumb {
+    margin-top: 118px; /* Standard Webflow navbar offset height */
+    background: linear-gradient(135deg, #0a0e17 0%, #161f30 100%) !important;
+    padding: 60px 0 40px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 350px;
+    overflow: hidden;
+    opacity: 1;
+  }
+  
+  .section_breadcrumb.is-compact {
+    padding: 20px 0 !important;
+    max-height: 150px;
+  }
+
+  /* Automatically shrink to a very small, clean top bar instead of fully disappearing */
+  .section_breadcrumb.is-retracted {
+    margin-top: 118px !important;
+    max-height: 120px !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .section-gap.hero {
+    padding-top: 0 !important;
+  }
+  
+  .breadcrumb-wrapper {
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    flex-flow: column;
+    display: flex;
+    align-items: flex-start;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section_breadcrumb.is-compact .breadcrumb-wrapper {
+    grid-column-gap: 12px !important;
+    grid-row-gap: 12px !important;
+  }
+
+  /* When shrunken, reduce space between badge and title */
+  .section_breadcrumb.is-retracted .breadcrumb-wrapper {
+    grid-column-gap: 6px !important;
+    grid-row-gap: 6px !important;
+  }
+  
+  /* Breadcrumb link block transition (collapses on shrink) */
+  .breadcrumb-link-block {
+    margin-bottom: 4px !important;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 50px;
+    opacity: 1;
+    overflow: hidden;
+  }
+
+  .section_breadcrumb.is-retracted .breadcrumb-link-block {
+    max-height: 0 !important;
+    margin-bottom: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+  
+  .link-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px;
+  }
+  
+  .link-button:hover {
+    opacity: 1;
+  }
+
+  .back-arrow-svg {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .link-button:hover .back-arrow-svg {
+    transform: translateX(-4px);
+  }
+  
+  /* Red Pill Badge design styled like the screenshot */
+  .breadcrumb-subtitle {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #ff4d4d !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+    padding: 5px 14px !important;
+    border-radius: 20px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    display: inline-block !important;
+    line-height: 1.4 !important;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .section_breadcrumb.is-compact .breadcrumb-subtitle {
+    font-size: 9px !important;
+    padding: 3px 10px !important;
+  }
+
+  /* Shrink badge inside shrunken banner */
+  .section_breadcrumb.is-retracted .breadcrumb-subtitle {
+    font-size: 9px !important;
+    padding: 3px 10px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .heading-style-2.text-color-white {
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+    margin: 12px 0 0 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.5px !important;
+    line-height: 1.2 !important;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .section_breadcrumb.is-compact .heading-style-2.text-color-white {
+    font-size: 1.6rem !important;
+    margin: 6px 0 0 !important;
+  }
+
+  /* Shrink title font inside shrunken banner */
+  .section_breadcrumb.is-retracted .heading-style-2.text-color-white {
+    font-size: 1.25rem !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    line-height: 1.25 !important;
+  }
+  
+  /* Subtitle text transition (collapses on shrink) */
+  .text-color-light-slate {
+    font-size: 1.025rem !important;
+    color: #94a3b8 !important;
+    margin: 12px 0 0 !important;
+    font-weight: 500 !important;
+    max-width: 650px !important;
+    line-height: 1.6 !important;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 100px;
+    opacity: 1;
+    overflow: hidden;
+  }
+  
+  .section_breadcrumb.is-compact .text-color-light-slate {
+    font-size: 0.825rem !important;
+    margin: 4px 0 0 !important;
+  }
+
+  .section_breadcrumb.is-retracted .text-color-light-slate {
+    max-height: 0 !important;
+    margin-top: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  /* Responsive styling */
+  @media screen and (max-width: 991px) {
+    .section_breadcrumb {
+      margin-top: 90px; /* Adjust top margin for mobile navbar height */
+      padding: 40px 0 30px !important;
+    }
+    .section_breadcrumb.is-compact {
+      padding: 15px 0 !important;
+    }
+    .section_breadcrumb.is-retracted {
+      margin-top: 90px !important;
+      max-height: 70px !important;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+    .heading-style-2.text-color-white {
+      font-size: 2.2rem !important;
+    }
+    .section_breadcrumb.is-compact .heading-style-2.text-color-white {
+      font-size: 1.4rem !important;
+    }
+    .section_breadcrumb.is-retracted .heading-style-2.text-color-white {
+      font-size: 1.15rem !important;
+    }
+  }
+</style>

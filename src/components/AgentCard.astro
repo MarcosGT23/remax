@@ -1,0 +1,434 @@
+---
+// src/components/AgentCard.astro
+export interface Props {
+  name: string;
+  specialty?: string;
+  role?: string;
+  phone: string;
+  email: string;
+  propertiesCount: number;
+  image?: string;
+  city: string;
+  agency?: string;
+  isFeatured?: boolean;
+  initials?: string;
+  instagram?: string;
+  facebook?: string;
+  slug?: string;
+}
+
+const {
+  name,
+  specialty,
+  role,
+  phone,
+  email,
+  propertiesCount,
+  image,
+  city,
+  isFeatured = false,
+  initials,
+  instagram,
+  facebook,
+  slug
+} = Astro.props;
+
+// Compute initials if not provided (e.g. "Carlos Mendoza" -> "CM")
+const computedInitials = initials || name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+// Normalize phone & build social / contact URLs
+const phoneDigits = phone ? phone.replace(/[^\d]/g, '') : '';
+const cleanPhoneDigits = phoneDigits.startsWith('591') ? phoneDigits : `591${phoneDigits}`;
+const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURIComponent(name)},%20estoy%20interesado%20en%20tus%20servicios%20inmobiliarios.`;
+const instagramUrl = instagram || `https://instagram.com/remax.bolivia`;
+const facebookUrl = facebook || `https://facebook.com/remaxbolivia`;
+const emailUrl = `mailto:${email}`;
+const displaySpecialty = specialty || role || "Asesor Inmobiliario";
+const agentSlug = slug || name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+const agentProfileUrl = `/agentes/${agentSlug}`;
+---
+
+<article
+  class="agent-card-replicate"
+  data-name={name.toLowerCase()}
+  data-specialty={displaySpecialty.toLowerCase()}
+  data-city={city}
+>
+  <!-- Col 1: Avatar -->
+  <div class="card-avatar-col">
+    <a href={agentProfileUrl} class="avatar-link" title={`Ver perfil de ${name}`}>
+      <div class="avatar-container">
+        {image && !image.includes('placeholder') ? (
+          <img src={image} alt={name} class="avatar-img" loading="lazy" />
+        ) : (
+          <div class="avatar-fallback">
+            <span class="initials-text">{computedInitials}</span>
+          </div>
+        )}
+      </div>
+    </a>
+  </div>
+
+  <!-- Col 2: Name, Badge & Specialty -->
+  <div class="card-info-col">
+    <div class="name-badge-row">
+      <a href={agentProfileUrl} class="agent-name-link" title={`Ver perfil de ${name}`}>
+        <h3 class="agent-name">{name}</h3>
+      </a>
+      {isFeatured && <span class="featured-badge">DESTACADO</span>}
+    </div>
+    <p class="agent-specialty">{displaySpecialty}</p>
+  </div>
+
+  <!-- Col 3: Location -->
+  <div class="card-location-col">
+    <div class="agent-location">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="location-pin">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <span>{city}</span>
+    </div>
+  </div>
+
+  <!-- Col 4: Properties Count -->
+  <div class="card-properties-col">
+    <div class="properties-count-block">
+      <span class="count-number">{propertiesCount}</span>
+      <span class="count-text">propiedades</span>
+    </div>
+  </div>
+
+  <!-- Col 5: 4 Contact / Social Media Action Buttons (WhatsApp, Instagram, Facebook, Correo) -->
+  <div class="card-actions-col">
+    <!-- WhatsApp -->
+    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="action-icon-btn whatsapp-btn" title={`WhatsApp con ${name}`} aria-label={`WhatsApp con ${name}`}>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+    </a>
+
+    <!-- Instagram -->
+    <a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="action-icon-btn instagram-btn" title={`Instagram de ${name}`} aria-label={`Instagram de ${name}`}>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    </a>
+
+    <!-- Facebook -->
+    <a href={facebookUrl} target="_blank" rel="noopener noreferrer" class="action-icon-btn facebook-btn" title={`Facebook de ${name}`} aria-label={`Facebook de ${name}`}>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+      </svg>
+    </a>
+
+    <!-- Correo / Email -->
+    <a href={emailUrl} class="action-icon-btn email-btn" title={`Correo a ${email}`} aria-label={`Correo a ${email}`}>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .agent-card-replicate {
+    background-color: #ffffff;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .agent-card-replicate:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -8px rgba(22, 92, 253, 0.1);
+    border-color: rgba(22, 92, 253, 0.25);
+  }
+
+  /* Col 1: Avatar Circle */
+  .card-avatar-col {
+    margin-bottom: 20px;
+  }
+
+  .avatar-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative;
+    background-color: #f1f5f9;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05), 0 0 0 1px #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .agent-card-replicate:hover .avatar-container {
+    transform: scale(1.05);
+    border-color: #ffffff;
+    box-shadow: 0 6px 16px rgba(22, 92, 253, 0.25), 0 0 0 2px #165cfd;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .agent-card-replicate:hover .avatar-img {
+    transform: scale(1.08);
+  }
+
+  .avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 800;
+    font-size: 1.15rem;
+  }
+
+  .initials-text {
+    color: #475569;
+    letter-spacing: 0.5px;
+  }
+
+  /* Col 2: Name & Specialty */
+  .card-info-col {
+    margin-bottom: 8px;
+  }
+
+  .name-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .agent-name-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+
+  .agent-name-link:hover .agent-name {
+    color: #165cfd;
+  }
+
+  .avatar-link {
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .agent-name {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+  }
+
+  .featured-badge {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: inline-block;
+  }
+
+  .agent-specialty {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 4px 0 0;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* Col 3: Location */
+  .card-location-col {
+    margin-bottom: 20px;
+  }
+
+  .agent-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .location-pin {
+    color: #cbd5e1;
+    flex-shrink: 0;
+  }
+
+  /* Col 4: Properties Count */
+  .card-properties-col {
+    margin-bottom: 20px;
+    margin-top: auto;
+  }
+
+  .properties-count-block {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .count-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1;
+  }
+
+  .count-text {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+
+  /* Col 5: 4 Contact Action Buttons */
+  .card-actions-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .action-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+
+  /* WhatsApp Hover */
+  .action-icon-btn.whatsapp-btn:hover {
+    background-color: #25d366;
+    color: #ffffff;
+    border-color: #25d366;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  }
+
+  /* Instagram Hover */
+  .action-icon-btn.instagram-btn:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: #ffffff;
+    border-color: #dc2743;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3);
+  }
+
+  /* Facebook Hover */
+  .action-icon-btn.facebook-btn:hover {
+    background-color: #1877f2;
+    color: #ffffff;
+    border-color: #1877f2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+  }
+
+  /* Email Hover */
+  .action-icon-btn.email-btn:hover {
+    background-color: #165cfd;
+    color: #ffffff;
+    border-color: #165cfd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 92, 253, 0.3);
+  }
+
+  /* Strict Column Alignment for List View (.is-list-view) */
+  :global(.is-list-view) .agent-card-replicate {
+    display: grid !important;
+    grid-template-columns: 56px minmax(200px, 2fr) minmax(130px, 1.2fr) minmax(110px, 1fr) 180px !important;
+    align-items: center !important;
+    padding: 16px 24px !important;
+    gap: 20px !important;
+    height: auto !important;
+    border-radius: 18px !important;
+  }
+
+  :global(.is-list-view) .card-avatar-col {
+    margin-bottom: 0 !important;
+  }
+
+  :global(.is-list-view) .avatar-container {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  :global(.is-list-view) .card-info-col {
+    margin-bottom: 0 !important;
+  }
+
+  :global(.is-list-view) .card-location-col {
+    margin-bottom: 0 !important;
+  }
+
+  :global(.is-list-view) .card-properties-col {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  :global(.is-list-view) .count-number {
+    font-size: 1.45rem !important;
+  }
+
+  :global(.is-list-view) .card-actions-col {
+    justify-content: flex-end !important;
+    gap: 6px !important;
+  }
+
+  @media screen and (max-width: 991px) {
+    :global(.is-list-view) .agent-card-replicate {
+      grid-template-columns: 50px 1fr 1fr 180px !important;
+    }
+    :global(.is-list-view) .card-location-col {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    :global(.is-list-view) .agent-card-replicate {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding: 20px !important;
+    }
+  }
+</style>

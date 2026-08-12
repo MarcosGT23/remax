@@ -1,0 +1,624 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageHeader from '../components/PageHeader.astro';
+import AgentCard from '../components/AgentCard.astro';
+
+import { fetchAPI } from '../lib/api';
+
+const staticAgentes = [
+  {
+    name: "Carlos Mendoza",
+    specialty: "Casas & condominios",
+    role: "Agente Senior - Casas & Condominios",
+    phone: "+591 712 34567",
+    email: "carlos.mendoza@remax.bo",
+    properties: 18,
+    image: "/images/avatar-01_1avatar-01.png",
+    city: "Santa Cruz",
+    isFeatured: true,
+    initials: "CM"
+  },
+  {
+    name: "María Fernanda Claros",
+    specialty: "Departamentos y alquileres",
+    role: "Especialista en Departamentos y Alquileres",
+    phone: "+591 765 43210",
+    email: "maria.claros@remax.bo",
+    properties: 24,
+    image: "/images/avatar-02_1avatar-02.png",
+    city: "La Paz",
+    isFeatured: false,
+    initials: "MF"
+  },
+  {
+    name: "Roberto Gutierrez",
+    specialty: "Anticréticos y terrenos",
+    role: "Asesor Comercial de Anticréticos y Terrenos",
+    phone: "+591 789 01234",
+    email: "roberto.gutierrez@remax.bo",
+    properties: 15,
+    image: "/images/avatar-03_1avatar-03.png",
+    city: "Cochabamba",
+    isFeatured: false,
+    initials: "RG"
+  },
+  {
+    name: "Andrea Siles",
+    specialty: "Inmuebles comerciales",
+    role: "Consultora Inmobiliaria de Inmuebles Comerciales",
+    phone: "+591 700 98765",
+    email: "andrea.siles@remax.bo",
+    properties: 12,
+    image: "/images/avatar-01_1avatar-01.png",
+    city: "Santa Cruz",
+    isFeatured: false,
+    initials: "AS"
+  },
+  {
+    name: "Gabriel Morales",
+    specialty: "Asesor financiero e inmobiliario",
+    role: "Asesor Financiero e Inmobiliario",
+    phone: "+591 733 11223",
+    email: "gabriel.morales@remax.bo",
+    properties: 21,
+    image: "/images/avatar-02_1avatar-02.png",
+    city: "La Paz",
+    isFeatured: true,
+    initials: "GM"
+  },
+  {
+    name: "Valeria Roca",
+    specialty: "Ventas y proyectos",
+    role: "Agente Certificada en Ventas y Proyectos",
+    phone: "+591 722 44556",
+    email: "valeria.roca@remax.bo",
+    properties: 19,
+    image: "/images/avatar-03_1avatar-03.png",
+    city: "Cochabamba",
+    isFeatured: false,
+    initials: "VR"
+  }
+];
+
+let agentes = [];
+try {
+  const response = await fetchAPI('agentes', { populate: 'image' });
+  const data = response.data || [];
+  if (data.length > 0) {
+      agentes = data.map((item: any, idx: number) => {
+        const entry = item.documentId ? item : (item.attributes || item);
+        const imageUrl = entry.image?.url || entry.image?.data?.attributes?.url || '';
+        
+        let finalImage = imageUrl;
+        if (imageUrl && imageUrl.startsWith('/uploads/')) {
+          finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
+        } else if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+          finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
+        }
+        
+        const generatedSlug = entry.slug || entry.name?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "") || `agente-${idx}`;
+        
+        return {
+          name: entry.name,
+          slug: generatedSlug,
+          specialty: entry.specialty || entry.role || "Asesor Inmobiliario",
+          role: entry.role,
+          phone: entry.phone,
+          email: entry.email,
+          properties: entry.propertiesCount || (10 + idx * 3),
+          image: finalImage,
+          city: entry.city || "Santa Cruz",
+          zone: entry.zone || "Equipetrol",
+          experience: entry.experience || "5+ años de experiencia",
+          bio: entry.bio || "",
+          isFeatured: entry.isFeatured ?? (idx % 4 === 0),
+          initials: entry.initials || entry.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase(),
+          whatsapp: entry.whatsapp,
+          instagram: entry.instagram,
+          facebook: entry.facebook
+        };
+      });
+  } else {
+    agentes = staticAgentes;
+  }
+} catch (error) {
+  console.warn('Error fetching agents from Strapi, falling back to static data:', error);
+  agentes = staticAgentes;
+}
+---
+
+<Layout title="Nuestros Agentes Inmobiliarios | RE/MAX Bolivia" description="Encuentra al agente inmobiliario ideal para vender, alquilar o comprar tu propiedad con seguridad y respaldo en Bolivia.">
+  <Header />
+
+  <main class="main-wrapper">
+    <PageHeader
+      badge="Equipo de Asesores"
+      title="Agentes Inmobiliarios Certificados"
+      subtitle="Asesoría personalizada con profesionales apasionados que conocen cada detalle del mercado inmobiliario local."
+      backLink="/"
+    />
+
+    <!-- Section Agents Directory -->
+    <section class="agents-section">
+      <div class="container-main">
+
+        <!-- Top Controls Bar matching Screenshot -->
+        <div class="controls-top-bar">
+          <!-- Search Input -->
+          <div class="search-input-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="agentSearchInput"
+              class="agent-search-input"
+              placeholder="Buscar agente o especialidad"
+            />
+          </div>
+
+          <!-- City Filter Pills & View Toggles -->
+          <div class="controls-right">
+            <div class="city-pills-group">
+              <button class="city-pill active" data-city="ALL" type="button">Todos</button>
+              <button class="city-pill" data-city="Santa Cruz" type="button">Santa Cruz</button>
+              <button class="city-pill" data-city="La Paz" type="button">La Paz</button>
+              <button class="city-pill" data-city="Cochabamba" type="button">Cochabamba</button>
+            </div>
+
+            <!-- Grid / List View Toggle Button -->
+            <div class="view-mode-toggle">
+              <button id="btnGridView" class="view-btn active" title="Vista en cuadrícula" aria-label="Vista en cuadrícula" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                  <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                  <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                  <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+              </button>
+              <button id="btnListView" class="view-btn" title="Vista en lista" aria-label="Vista en lista" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Count Indicator -->
+        <div id="agentsCountBadge" class="results-count-bar">
+          {agentes.length} agentes
+        </div>
+
+        <!-- Agents Grid -->
+        <div id="agentsGridContainer" class="agents-grid-layout">
+          {agentes.map((agente) => (
+            <div class="agent-item-wrapper" data-city={agente.city} data-name={agente.name.toLowerCase()} data-specialty={agente.specialty.toLowerCase()}>
+              <AgentCard
+                name={agente.name}
+                specialty={agente.specialty}
+                role={agente.role}
+                phone={agente.phone}
+                email={agente.email}
+                propertiesCount={agente.properties}
+                image={agente.image}
+                city={agente.city}
+                isFeatured={agente.isFeatured}
+                initials={agente.initials}
+                instagram={agente.instagram}
+                facebook={agente.facebook}
+                slug={agente.slug}
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- Empty State -->
+        <div id="agentsEmptyState" class="agents-empty-state" style="display: none;">
+          <div class="empty-icon">👥</div>
+          <h3>No se encontraron agentes</h3>
+          <p>Prueba con otros términos de búsqueda o selecciona otra ciudad.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Join Us Banner CTA (Minimalist Cream & Animated) -->
+    <section class="join-team-section">
+      <div class="container-main">
+        <div class="join-card animated-join-card">
+          <div class="join-content">
+            <span class="join-badge">Carrera Inmobiliaria</span>
+            <h2>¿Quieres formar parte de la red de Agentes RE/MAX?</h2>
+            <p>Emprende con el respaldo de la franquicia inmobiliaria #1 en Bolivia y el mundo. Desarrolla tu propio negocio con capacitaciones continuas y tecnología de punta.</p>
+            <a href="/quieres-ser-agente" class="join-btn">Únete como Agente</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Intersection Observer for Carrera Inmobiliaria card animation
+    const joinCard = document.querySelector('.animated-join-card');
+    if (joinCard) {
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.15 });
+      cardObserver.observe(joinCard);
+    }
+
+    const searchInput = document.getElementById('agentSearchInput');
+    const cityPills = document.querySelectorAll('.city-pill');
+    const btnGridView = document.getElementById('btnGridView');
+    const btnListView = document.getElementById('btnListView');
+    const gridContainer = document.getElementById('agentsGridContainer');
+    const agentWrappers = Array.from(document.querySelectorAll('.agent-item-wrapper'));
+    const countBadge = document.getElementById('agentsCountBadge');
+    const emptyState = document.getElementById('agentsEmptyState');
+
+    let activeCity = 'ALL';
+
+    function filterAgents() {
+      const query = (searchInput?.value || '').toLowerCase().trim();
+      let visibleCount = 0;
+
+      agentWrappers.forEach(wrapper => {
+        const name = wrapper.getAttribute('data-name') || '';
+        const specialty = wrapper.getAttribute('data-specialty') || '';
+        const city = wrapper.getAttribute('data-city') || '';
+
+        const matchesQuery = !query || name.includes(query) || specialty.includes(query);
+        const matchesCity = activeCity === 'ALL' || city === activeCity;
+
+        if (matchesQuery && matchesCity) {
+          wrapper.style.display = 'block';
+          visibleCount++;
+        } else {
+          wrapper.style.display = 'none';
+        }
+      });
+
+      if (countBadge) {
+        countBadge.textContent = `${visibleCount} ${visibleCount === 1 ? 'agente' : 'agentes'}`;
+      }
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    // City Filter Pills Listener
+    cityPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        cityPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeCity = pill.getAttribute('data-city') || 'ALL';
+        filterAgents();
+      });
+    });
+
+    // Search Input Listener
+    if (searchInput) {
+      searchInput.addEventListener('input', filterAgents);
+    }
+
+    // Grid vs List Toggle Listeners
+    if (btnGridView && btnListView && gridContainer) {
+      btnGridView.addEventListener('click', () => {
+        btnGridView.classList.add('active');
+        btnListView.classList.remove('active');
+        gridContainer.classList.remove('is-list-view');
+      });
+
+      btnListView.addEventListener('click', () => {
+        btnListView.classList.add('active');
+        btnGridView.classList.remove('active');
+        gridContainer.classList.add('is-list-view');
+      });
+    }
+  });
+</script>
+
+<style>
+  .agents-section {
+    padding: 50px 0 90px;
+    background-color: #f8fafc;
+  }
+
+  .container-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Top Controls Bar matching Screenshot */
+  .controls-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    width: 340px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+    pointer-events: none;
+  }
+
+  .agent-search-input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    font-size: 0.925rem;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  }
+
+  .agent-search-input:focus {
+    border-color: #165cfd;
+    box-shadow: 0 0 0 3px rgba(22, 92, 253, 0.1);
+  }
+
+  .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* City Filter Pills */
+  .city-pills-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .city-pill {
+    background: none;
+    border: none;
+    color: #475569;
+    font-size: 0.925rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .city-pill:hover {
+    color: #165cfd;
+  }
+
+  .city-pill.active {
+    background-color: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  }
+
+  /* View Mode Toggle Buttons */
+  .view-mode-toggle {
+    display: flex;
+    align-items: center;
+    background-color: #f1f5f9;
+    padding: 4px;
+    border-radius: 12px;
+    gap: 4px;
+  }
+
+  .view-btn {
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .view-btn.active {
+    background-color: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Count Indicator */
+  .results-count-bar {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+
+  /* Grid Layout (3 Columns matching mockup) */
+  .agents-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    transition: all 0.3s ease;
+  }
+
+  /* List View */
+  .agents-grid-layout.is-list-view {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Empty State */
+  .agents-empty-state {
+    text-align: center;
+    background: #ffffff;
+    padding: 60px 24px;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+  }
+
+  .agents-empty-state h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px;
+  }
+
+  .agents-empty-state p {
+    color: #64748b;
+    font-size: 0.925rem;
+    margin: 0;
+  }
+
+  /* Join Team Section (Cream & Minimalist Animated) */
+  .join-team-section {
+    padding: 40px 0 90px;
+    background-color: #f8fafc;
+  }
+
+  .join-card {
+    background: #f7f5f0; /* Elegant warm cream tone */
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 24px;
+    padding: 56px 48px;
+    color: #0f172a;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease;
+  }
+
+  .join-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .join-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.08);
+  }
+
+  .join-badge {
+    background: rgba(190, 18, 60, 0.08);
+    color: #be123c;
+    border: 1px solid rgba(190, 18, 60, 0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: inline-block;
+    margin-bottom: 18px;
+  }
+
+  .join-content h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 16px;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+  }
+
+  .join-content p {
+    font-size: 1.05rem;
+    color: #475569;
+    max-width: 680px;
+    line-height: 1.65;
+    margin: 0 0 32px;
+  }
+
+  .join-btn {
+    display: inline-block;
+    background: #165cfd;
+    color: #ffffff;
+    padding: 14px 34px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 20px rgba(22, 92, 253, 0.25);
+  }
+
+  .join-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(22, 92, 253, 0.38);
+  }
+
+  /* Responsive Design */
+  @media screen and (max-width: 991px) {
+    .agents-grid-layout {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .controls-top-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .search-input-wrapper {
+      width: 100%;
+    }
+    .controls-right {
+      justify-content: space-between;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .agents-grid-layout {
+      grid-template-columns: 1fr;
+    }
+    .city-pills-group {
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .join-card {
+      padding: 40px 24px;
+    }
+    .join-content h2 {
+      font-size: 1.6rem;
+    }
+  }
+</style>

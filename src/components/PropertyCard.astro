@@ -1,0 +1,376 @@
+---
+// src/components/PropertyCard.astro
+export interface Props {
+  id?: string;
+  type: string;
+  price: string;
+  address: string;
+  features: string[]; // e.g. ["80 m²", "324 m²", "2", "1"]
+  badgeTitle: string; // e.g. "VENTA"
+  badgeClass?: string; // e.g. "badge-sale" or "badge-rent"
+  image?: string;
+  agentName?: string;
+  agentRole?: string;
+  agentPhone?: string;
+  agentImage?: string;
+  agentWhatsapp?: string;
+}
+
+const {
+  id = "alquiler-local-comercial-santa-cruz-villa-1ro-de-mayo-1200986298-28",
+  type,
+  price,
+  address,
+  features,
+  badgeTitle,
+  badgeClass = "badge-sale",
+  image,
+  agentName = "Carlos Mendoza",
+  agentRole = "Asesor RE/MAX Bolivia",
+  agentPhone = "+591 712 34567",
+  agentImage = "/images/avatar-01_1avatar-01.png",
+  agentWhatsapp = "https://wa.me/59171234567"
+} = Astro.props;
+
+// Property detail URL
+const propertyUrl = `/inmuebles/${id}`;
+
+// Determine fallbacks for property type images
+let fallbackImage = "/images/6a5717b9f45479999f4faad2_our-work-thumbnail-1.jpg";
+if (type.toLowerCase().includes("alquiler") || type.toLowerCase().includes("otros") || type.toLowerCase().includes("local")) {
+  fallbackImage = "/images/6a5717b9f45479999f4faac2_our-work-thumbnail-3.jpg";
+} else if (type.toLowerCase().includes("depto") || type.toLowerCase().includes("departamento")) {
+  fallbackImage = "/images/6a5717b9f45479999f4faad0_our-work-thumbnail-2.jpg";
+}
+
+const finalImage = image || fallbackImage;
+
+// Agent Initials for fallback
+const agentInitials = agentName
+  ? agentName.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase()
+  : "RM";
+---
+
+<article class="property-card-standard">
+  <a href={propertyUrl} class="image-container-link">
+    <div class="image-container">
+      <img src={finalImage} alt={`Propiedad en ${address}`} class="card-img" />
+      <span class={`card-badge ${badgeClass}`}>{badgeTitle}</span>
+      <div class="price-overlay">USD {price}</div>
+    </div>
+  </a>
+
+  <div class="content-container">
+    <span class="property-type">{type}</span>
+    <h3 class="property-price">
+      <a href={propertyUrl} class="price-link">USD {price}</a>
+    </h3>
+    <p class="property-address" title={address}>
+      <a href={propertyUrl} class="address-link">{address}</a>
+    </p>
+
+    <div class="features-row">
+      {features.map((feature, idx) => {
+        if (feature === "0") return null;
+
+        // Render matching SVG icon based on layout index
+        let icon = null;
+        if (feature.includes("m²")) {
+          // Area Grid Icon
+          icon = (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+              <line x1="15" y1="3" x2="15" y2="21"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+            </svg>
+          );
+        } else if (idx === 2 || (features.length === 3 && idx === 1)) {
+          // Bedrooms Bed Icon
+          icon = (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+              <path d="M2 4v16M22 4v16M2 8h20M2 14h20M6 8v6M18 8v6"/>
+            </svg>
+          );
+        } else {
+          // Bathrooms Tub Icon
+          icon = (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+              <path d="M4 19h16a2 2 0 0 0 2-2V4H2v13a2 2 0 0 0 2 2zM6 4V2M18 4V2M12 4v6M10 6h4"/>
+            </svg>
+          );
+        }
+
+        return (
+          <div class="feature-pill">
+            {icon}
+            <span class="feature-label">{feature}</span>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Agent Section linked directly to each property -->
+    <div class="agent-footer">
+      <div class="agent-profile">
+        {agentImage ? (
+          <img src={agentImage} alt={agentName} class="agent-avatar-img" />
+        ) : (
+          <div class="agent-avatar-fallback">{agentInitials}</div>
+        )}
+        <div class="agent-meta">
+          <span class="agent-name">{agentName}</span>
+          <span class="agent-role">{agentRole}</span>
+        </div>
+      </div>
+      <a 
+        href={agentWhatsapp} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="agent-contact-btn" 
+        title={`Contactar a ${agentName} (${agentPhone}) por WhatsApp`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Contactar</span>
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .property-card-standard {
+    background-color: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .image-container-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .price-link,
+  .address-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .price-link:hover,
+  .address-link:hover {
+    color: #165cfd;
+  }
+
+  .property-card-standard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+    border-color: rgba(22, 92, 253, 0.1);
+  }
+
+  .image-container {
+    position: relative;
+    height: 220px;
+    background-color: #f8fafc;
+    overflow: hidden;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .property-card-standard:hover .card-img {
+    transform: scale(1.04);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+  }
+
+  .badge-sale {
+    background-color: #165cfd;
+  }
+
+  .badge-rent {
+    background-color: #10b981;
+  }
+
+  .price-overlay {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .content-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .property-type {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #165cfd;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .property-price {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+  }
+
+  .property-address {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 8px 0 16px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.7rem; /* Fixed height for clean grid alignment */
+  }
+
+  .features-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .feature-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #334155;
+    transition: background-color 0.2s ease;
+  }
+
+  .property-card-standard:hover .feature-pill {
+    background-color: #e2e8f0;
+  }
+
+  .feature-icon {
+    color: #64748b;
+    flex-shrink: 0;
+  }
+
+  .feature-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  /* Agent Footer */
+  .agent-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px dashed #e2e8f0;
+    margin-top: auto;
+  }
+
+  .agent-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .agent-avatar-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #165cfd;
+  }
+
+  .agent-avatar-fallback {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #dbeafe;
+    color: #1e40af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .agent-meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .agent-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+  }
+
+  .agent-role {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .agent-contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #10b981;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .agent-contact-btn:hover {
+    background-color: #059669;
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  }
+</style>

@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "noticias",
+  "info": {
+    "singularName": "noticia",
+    "pluralName": "noticias",
+    "displayName": "Noticia",
+    "description": "Noticias y publicaciones de blog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "category": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "lastUpdate": {
+      "type": "date"
+    },
+    "readTime": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "introduction": {
+      "type": "text"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "author": {
+      "type": "string"
+    },
+    "authorImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
