@@ -2,13 +2,18 @@
   "name": "roofpro-theme-local",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
+    "postinstall": "node scripts/patch-vercel-adapter.js",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
+
   "dependencies": {
     "@astrojs/vercel": "^7.8.2",
     "astro": "^4.15.0"
