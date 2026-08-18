@@ -94,6 +94,7 @@
               class="brand-logo"
             />
           </a>
+
           <nav
             role="navigation"
             class="nav-menu-content w-nav-menu"
@@ -112,8 +113,9 @@
                   type="button"
                   class="nav-link w-nav-link custom-dropdown-toggle"
                   id="inmueblesDropdownBtn"
+                  aria-expanded="false"
                 >
-                  <span>INMUEBLES</span>
+                  <span>Inmuebles</span>
                   <svg
                     width="10"
                     height="6"
@@ -121,7 +123,6 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     class="dropdown-arrow-icon"
-                    style="transition: transform 0.2s ease;"
                   >
                     <path
                       d="M1 1.5L5 4.5L9 1.5"
@@ -271,7 +272,7 @@
 
               <a href="/noticias" class="nav-link w-nav-link">Noticias</a>
 
-              <!-- Button CTA Vender -->
+              <!-- Button CTA Vender (Mobile Drawer) -->
               <div class="general-button-block is-1">
                 <a href="/vender" class="primary-button w-inline-block">
                   <div class="btn-double-line">
@@ -281,7 +282,7 @@
                 </a>
               </div>
 
-              <!-- Button CTA Ser Agente -->
+              <!-- Button CTA Ser Agente (Mobile Drawer) -->
               <div class="general-button-block is-1-agent">
                 <a
                   href="/quieres-ser-agente"
@@ -297,7 +298,7 @@
           </nav>
 
           <div class="nav-button-block">
-            <!-- Button CTA Vender -->
+            <!-- Button CTA Vender (Desktop Header) -->
             <div class="general-button-block is-2">
               <a href="/vender" class="primary-button w-inline-block">
                 <div class="btn-double-line">
@@ -307,7 +308,7 @@
               </a>
             </div>
 
-            <!-- Button CTA Ser Agente -->
+            <!-- Button CTA Ser Agente (Desktop Header) -->
             <div class="general-button-block is-2-agent">
               <a
                 href="/quieres-ser-agente"
@@ -319,14 +320,30 @@
                 </div>
               </a>
             </div>
+
             <div class="menu-button-block">
               <button
                 type="button"
-                class="menu-button w-nav-button"
+                class="menu-button"
                 id="mobileMenuBtn"
                 aria-label="Abrir Menú"
+                aria-expanded="false"
               >
-                <div class="menu-button-icon w-icon-nav-menu"></div>
+                <svg
+                  class="hamburger-icon"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="3" y1="6" x2="21" y2="6" class="nav-line-top"></line>
+                  <line x1="3" y1="12" x2="21" y2="12" class="nav-line-mid"></line>
+                  <line x1="3" y1="18" x2="21" y2="18" class="nav-line-bot"></line>
+                </svg>
               </button>
             </div>
           </div>
@@ -337,6 +354,13 @@
 </header>
 
 <style>
+  .nav-content-block {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
   /* Brand Logo Header Styling matching proportions */
   .brand-logo-block {
     display: flex !important;
@@ -366,11 +390,10 @@
   }
 
   /* Symmetrical, elegant rounded-rectangle CTA buttons override */
-  .nav-button-block .primary-button,
-  .nav-menu .primary-button {
-    height: 48px !important; /* Taller for double lines */
+  .primary-button {
+    height: 48px !important;
     padding: 0 20px !important;
-    border-radius: 10px !important; /* Symmetrical rounded corners matching cards */
+    border-radius: 10px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -410,15 +433,15 @@
   }
 
   /* Button 1 (Vender): Light Blue Transparent with solid border */
-  .nav-button-block .general-button-block.is-2 .primary-button,
-  .nav-menu .general-button-block.is-1 .primary-button {
+  .general-button-block.is-2 .primary-button,
+  .general-button-block.is-1 .primary-button {
     background-color: rgba(22, 92, 253, 0.08) !important;
     color: #0043ff !important;
     border-color: #0043ff !important;
   }
 
-  .nav-button-block .general-button-block.is-2 .primary-button:hover,
-  .nav-menu .general-button-block.is-1 .primary-button:hover {
+  .general-button-block.is-2 .primary-button:hover,
+  .general-button-block.is-1 .primary-button:hover {
     background-color: #0043ff !important;
     color: #ffffff !important;
     transform: translateY(-1.5px);
@@ -426,50 +449,40 @@
   }
 
   /* Button 2 (Ser Agente): Light Burgundy Transparent with solid border */
-  .nav-button-block .general-button-block.is-2-agent .primary-button,
-  .nav-menu .general-button-block.is-1-agent .primary-button {
+  .general-button-block.is-2-agent .primary-button,
+  .general-button-block.is-1-agent .primary-button {
     background-color: rgba(190, 18, 60, 0.08) !important;
     color: #ff1200 !important;
     border-color: #ff1200 !important;
   }
 
-  .nav-button-block .general-button-block.is-2-agent .primary-button:hover,
-  .nav-menu .general-button-block.is-1-agent .primary-button:hover {
+  .general-button-block.is-2-agent .primary-button:hover,
+  .general-button-block.is-1-agent .primary-button:hover {
     background-color: #ff1200 !important;
     color: #ffffff !important;
     transform: translateY(-1.5px);
     box-shadow: 0 6px 16px rgba(190, 18, 60, 0.15) !important;
   }
 
-  .general-button-block.is-2-agent {
-    display: flex;
-    align-items: center;
+  /* Force uppercase & uniform font on all nav links */
+  .nav-link,
+  .custom-dropdown-toggle {
+    font-family: "Outfit", sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #0f172a !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
   }
 
-  .general-button-block.is-1-agent {
-    display: none;
+  .nav-link:hover,
+  .custom-dropdown-toggle:hover {
+    color: #0043ff !important;
   }
 
-  @media screen and (max-width: 991px) {
-    .nav-button-block {
-      gap: 6px !important;
-    }
-    .general-button-block.is-2-agent {
-      display: none !important;
-    }
-    .general-button-block.is-1-agent {
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .nav-menu .primary-button {
-      width: 100% !important;
-      max-width: 280px !important;
-    }
-  }
-
+  /* Dropdown Container */
   .custom-dropdown-container {
     position: relative;
     display: inline-block;
@@ -478,73 +491,76 @@
   .custom-dropdown-toggle {
     background: none;
     border: none;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    text-transform: inherit;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     height: 100%;
-    color: var(--_colors---body-text-color) !important;
-  }
-
-  .custom-dropdown-toggle:hover {
-    color: #0043ff !important;
+    padding: 0;
   }
 
   .dropdown-arrow-icon {
     transition: transform 0.2s ease-in-out;
     stroke: currentColor;
+    flex-shrink: 0;
   }
 
-  .custom-dropdown-container:hover .dropdown-arrow-icon,
-  .custom-dropdown-container.is-active .dropdown-arrow-icon {
-    transform: rotate(180deg);
-  }
+  /* Desktop Hover & Active state for Dropdown */
+  @media (min-width: 992px) {
+    .custom-dropdown-container:hover .dropdown-arrow-icon,
+    .custom-dropdown-container.is-active .dropdown-arrow-icon {
+      transform: rotate(180deg);
+    }
 
-  /* Dropdown Menu Container */
-  .custom-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    transform: translateY(15px);
-    width: 290px;
-    background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12);
-    padding: 10px;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-      opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: top left;
-  }
+    .custom-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      transform: translateY(15px);
+      width: 290px;
+      background-color: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12);
+      padding: 10px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: top left;
+    }
 
-  /* Transparent hover bridge to keep dropdown open when crossing the gap */
-  .custom-dropdown-menu::before {
-    content: "";
-    position: absolute;
-    top: -24px;
-    left: 0;
-    right: 0;
-    height: 30px;
-    background: transparent;
-    z-index: -1;
-  }
+    /* Hover bridge */
+    .custom-dropdown-menu::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: transparent;
+    }
 
-  .custom-dropdown-container:hover .custom-dropdown-menu,
-  .custom-dropdown-container.is-active .custom-dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(6px);
+    .custom-dropdown-container:hover .custom-dropdown-menu,
+    .custom-dropdown-container.is-active .custom-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(6px);
+    }
+
+    .general-button-block.is-1,
+    .general-button-block.is-1-agent {
+      display: none !important;
+    }
+
+    .menu-button-block {
+      display: none !important;
+    }
   }
 
   .custom-dropdown-list {
@@ -594,22 +610,7 @@
     background-color: #f7f5ee;
     color: #ff1200 !important;
     border: 1px dashed rgba(225, 29, 72, 0.25);
-    margin-top: 6px;
-  }
-
-  .nav-top-block {
-    background-color: #000e35 !important;
-  }
-
-  .nav-top-content-block .paragraph-xsmall {
-    font-family: "Outfit", sans-serif !important;
-    font-weight: 500;
-  }
-
-  .nav-link,
-  .custom-dropdown-toggle {
-    font-family: "Outfit", sans-serif !important;
-    font-weight: 600;
+    margin-top: 4px;
   }
 
   .custom-dropdown-link.seller:hover {
@@ -622,41 +623,155 @@
     color: #ff1200;
   }
 
+  .nav-top-block {
+    background-color: #000e35 !important;
+  }
+
+  .nav-top-content-block .paragraph-xsmall {
+    font-family: "Outfit", sans-serif !important;
+    font-weight: 500;
+  }
+
+  /* Hamburger Menu Button Styling */
+  .menu-button-block {
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-button {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    transition: all 0.2s ease;
+  }
+
+  .menu-button:hover,
+  .menu-button.is-active {
+    background-color: #f1f5f9;
+    color: #0043ff;
+    border-color: #cbd5e1;
+  }
+
+  .hamburger-icon line {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    transform-origin: center;
+  }
+
+  .menu-button.is-active .nav-line-top {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-button.is-active .nav-line-mid {
+    opacity: 0;
+  }
+
+  .menu-button.is-active .nav-line-bot {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Mobile Responsive Styles (< 991px) */
   @media (max-width: 991px) {
+    .general-button-block.is-2-agent {
+      display: none !important;
+    }
+
+    .nav-menu-content {
+      display: none !important;
+      position: absolute !important;
+      top: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      background-color: #ffffff !important;
+      padding: 20px 24px 28px !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+      border-bottom: 2px solid #f1f5f9 !important;
+      z-index: 9999 !important;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
     .nav-menu-content.is-open {
       display: block !important;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background-color: #ffffff;
-      padding: 20px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .nav-link-block {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    .nav-link {
+      padding: 12px 0 !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      font-size: 14px !important;
+      width: 100% !important;
+      display: block !important;
     }
 
     .custom-dropdown-container {
-      display: block;
-      width: 100%;
+      display: block !important;
+      width: 100% !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    .custom-dropdown-toggle {
+      width: 100% !important;
+      justify-content: space-between !important;
+      padding: 12px 0 !important;
+      font-size: 14px !important;
+    }
+
+    .custom-dropdown-container.is-active .dropdown-arrow-icon {
+      transform: rotate(180deg);
     }
 
     .custom-dropdown-menu {
-      position: static;
+      position: static !important;
       transform: none !important;
-      box-shadow: none;
-      border: none;
-      background-color: #f7f5ee;
-      width: 100%;
-      display: none;
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      padding: 6px 12px;
-      margin-top: 6px;
+      box-shadow: none !important;
+      border: 1px solid #e2e8f0 !important;
+      background-color: #f8fafc !important;
+      width: 100% !important;
+      display: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      padding: 8px !important;
+      margin: 4px 0 12px !important;
+      border-radius: 12px !important;
     }
 
     .custom-dropdown-container.is-active .custom-dropdown-menu {
-      display: block;
+      display: block !important;
+    }
+
+    /* Drawer CTA buttons */
+    .general-button-block.is-1,
+    .general-button-block.is-1-agent {
+      display: block !important;
+      width: 100% !important;
+      margin-top: 6px !important;
+    }
+
+    .general-button-block.is-1 .primary-button,
+    .general-button-block.is-1-agent .primary-button {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 48px !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .general-button-block.is-2 {
+      display: none !important;
     }
   }
 </style>
@@ -671,22 +786,44 @@
       : null;
 
     if (mobileBtn && navMenu) {
-      mobileBtn.addEventListener("click", () => {
-        navMenu.classList.toggle("is-open");
+      mobileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = navMenu.classList.toggle("is-open");
+        mobileBtn.classList.toggle("is-active", isOpen);
+        mobileBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
     }
 
     if (dropdownBtn && dropdownContainer) {
       dropdownBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        dropdownContainer.classList.toggle("is-active");
-      });
-
-      document.addEventListener("click", (e) => {
-        if (!dropdownContainer.contains(e.target)) {
-          dropdownContainer.classList.remove("is-active");
-        }
+        const isActive = dropdownContainer.classList.toggle("is-active");
+        dropdownBtn.setAttribute("aria-expanded", isActive ? "true" : "false");
       });
     }
+
+    // Close mobile menu / dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        navMenu &&
+        navMenu.classList.contains("is-open") &&
+        !navMenu.contains(e.target) &&
+        mobileBtn &&
+        !mobileBtn.contains(e.target)
+      ) {
+        navMenu.classList.remove("is-open");
+        mobileBtn.classList.remove("is-active");
+        mobileBtn.setAttribute("aria-expanded", "false");
+      }
+
+      if (
+        dropdownContainer &&
+        dropdownContainer.classList.contains("is-active") &&
+        !dropdownContainer.contains(e.target)
+      ) {
+        dropdownContainer.classList.remove("is-active");
+        if (dropdownBtn) dropdownBtn.setAttribute("aria-expanded", "false");
+      }
+    });
   });
 </script>
