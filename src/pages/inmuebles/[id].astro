@@ -317,7 +317,7 @@ const relatedProperties = propertiesData
                 <div class="amenities-grid">
                   {property.amenities.map((item) => (
                     <div class="amenity-pill">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0043ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                       <span>{item}</span>
@@ -405,7 +405,7 @@ const relatedProperties = propertiesData
               <!-- Agent Contact Information Details -->
               <div class="agent-meta-box">
                 <div class="agent-meta-item">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0043ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                   </svg>
@@ -413,14 +413,14 @@ const relatedProperties = propertiesData
                 </div>
 
                 <div class="agent-meta-item">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0043ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                   </svg>
                   <a href={`tel:${property.agent.phone}`}>{property.agent.phone}</a>
                 </div>
 
                 <div class="agent-meta-item">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#165cfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0043ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                     <polyline points="22,6 12,13 2,6"/>
                   </svg>
@@ -526,7 +526,7 @@ const relatedProperties = propertiesData
 
 <style>
   .property-detail-main {
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
     min-height: 100vh;
     padding-bottom: 80px;
   }
@@ -554,7 +554,7 @@ const relatedProperties = propertiesData
   }
 
   .breadcrumb-nav a:hover {
-    color: #165cfd;
+    color: #0043ff;
   }
 
   .breadcrumb-nav .sep {
@@ -603,12 +603,12 @@ const relatedProperties = propertiesData
 
   .badge-sale {
     background-color: rgba(190, 18, 60, 0.1);
-    color: #be123c;
+    color: #ff1200;
   }
 
   .badge-rent {
     background-color: rgba(22, 92, 253, 0.1);
-    color: #165cfd;
+    color: #0043ff;
   }
 
   .category-tag {
@@ -660,7 +660,7 @@ const relatedProperties = propertiesData
   .price-currency {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #165cfd;
+    color: #0043ff;
   }
 
   .price-amount {
@@ -694,7 +694,7 @@ const relatedProperties = propertiesData
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: #f8fafc;
+    background: #f7f5ee;
     border: 1px solid #cbd5e1;
     color: #334155;
     padding: 6px 14px;
@@ -707,14 +707,14 @@ const relatedProperties = propertiesData
 
   .icon-action-btn:hover {
     background: #ffffff;
-    border-color: #165cfd;
-    color: #165cfd;
+    border-color: #0043ff;
+    color: #0043ff;
   }
 
   .icon-action-btn.bookmarked {
-    background: #ffe4e6;
-    border-color: #be123c;
-    color: #be123c;
+    background: #f7f5ee;
+    border-color: #ff1200;
+    color: #ff1200;
   }
 
   /* Interactive Photo Gallery */
@@ -778,7 +778,7 @@ const relatedProperties = propertiesData
 
   .gallery-thumb-btn.active,
   .gallery-thumb-btn:hover {
-    border-color: #165cfd;
+    border-color: #0043ff;
     transform: translateY(-2px);
   }
 
@@ -793,7 +793,7 @@ const relatedProperties = propertiesData
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 16px;
-    background: #f8fafc;
+    background: #f7f5ee;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
     padding: 20px;
@@ -811,7 +811,7 @@ const relatedProperties = propertiesData
     border-radius: 12px;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    color: #165cfd;
+    color: #0043ff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -889,7 +889,7 @@ const relatedProperties = propertiesData
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #f8fafc;
+    background: #f7f5ee;
     border: 1px solid #e2e8f0;
     padding: 10px 16px;
     border-radius: 12px;
@@ -970,7 +970,7 @@ const relatedProperties = propertiesData
   .sticky-agent-card {
     position: sticky;
     top: 90px;
-    background: #f7f5f0; /* Warm elegant cream tone */
+    background: #f7f5ee; /* Warm elegant cream tone */
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 24px;
     padding: 28px 24px;
@@ -983,7 +983,7 @@ const relatedProperties = propertiesData
   .agent-badge-tag {
     align-self: flex-start;
     background: rgba(22, 92, 253, 0.08);
-    color: #165cfd;
+    color: #0043ff;
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -1005,7 +1005,7 @@ const relatedProperties = propertiesData
     height: 68px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2.5px solid #165cfd;
+    border: 2.5px solid #0043ff;
     box-shadow: 0 4px 12px rgba(22, 92, 253, 0.15);
   }
 
@@ -1025,7 +1025,7 @@ const relatedProperties = propertiesData
 
   .agent-role {
     font-size: 0.82rem;
-    color: #165cfd;
+    color: #0043ff;
     font-weight: 700;
   }
 
@@ -1062,7 +1062,7 @@ const relatedProperties = propertiesData
   }
 
   .agent-meta-item a:hover {
-    color: #165cfd;
+    color: #0043ff;
   }
 
   .agent-direct-actions {
@@ -1110,7 +1110,7 @@ const relatedProperties = propertiesData
 
   .phone-direct-btn:hover {
     border-color: #0f172a;
-    background: #f8fafc;
+    background: #f7f5ee;
   }
 
   .btn-view-agent-profile {
@@ -1129,7 +1129,7 @@ const relatedProperties = propertiesData
   }
 
   .btn-view-agent-profile:hover {
-    background: #165cfd;
+    background: #0043ff;
     box-shadow: 0 4px 14px rgba(22, 92, 253, 0.25);
     transform: translateY(-1px);
   }
@@ -1178,8 +1178,8 @@ const relatedProperties = propertiesData
     align-items: center;
     gap: 8px;
     background: #ffffff;
-    color: #165cfd;
-    border: 1.5px solid #165cfd;
+    color: #0043ff;
+    border: 1.5px solid #0043ff;
     padding: 8px 16px;
     border-radius: 10px;
     font-size: 0.85rem;
@@ -1189,7 +1189,7 @@ const relatedProperties = propertiesData
   }
 
   .btn-open-gmaps:hover {
-    background: #165cfd;
+    background: #0043ff;
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(22, 92, 253, 0.25);
   }
@@ -1221,10 +1221,10 @@ const relatedProperties = propertiesData
       className: 'detail-map-pin-icon',
       html: `
         <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
-          <div style="background: #dc2626; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4); white-space: nowrap; border: 2px solid #ffffff;">
+          <div style="background: #ff1200; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4); white-space: nowrap; border: 2px solid #ffffff;">
             USD ${price}
           </div>
-          <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 9px solid #dc2626; margin-top: -1px;"></div>
+          <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 9px solid #ff1200; margin-top: -1px;"></div>
         </div>
       `,
       iconSize: [120, 45],

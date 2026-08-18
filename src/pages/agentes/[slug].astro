@@ -6,115 +6,197 @@ import PageHeader from '../../components/PageHeader.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
 
 const agentsList = [
-    {
-      slug: "carlos-mendoza",
-      name: "Carlos Mendoza",
-      specialty: "Casas & Condominios de Lujo",
-      role: "Agente Senior RE/MAX - Especialista en Casas & Condominios",
-      phone: "+591 712 34567",
-      email: "carlos.mendoza@remax.bo",
-      propertiesCount: 18,
-      image: "/images/avatar-01_1avatar-01.png",
-      city: "Santa Cruz",
-      zone: "Equipetrol Norte / Urubó",
-      experience: "8+ años de experiencia",
-      isFeatured: true,
-      bio: "Con más de 8 años en el mercado inmobiliario de Santa Cruz, Carlos se ha posicionado como líder en la comercialización de viviendas residenciales de alto valor, condominios cerrados y penthouses exclusivos en Equipetrol y Urubó.",
-      whatsapp: "https://wa.me/59171234567",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    },
-    {
-      slug: "maria-fernanda-claros",
-      name: "María Fernanda Claros",
-      specialty: "Departamentos & Alquileres Ejecutivos",
-      role: "Especialista en Departamentos y Alquileres",
-      phone: "+591 765 43210",
-      email: "maria.claros@remax.bo",
-      propertiesCount: 24,
-      image: "/images/avatar-02_1avatar-02.png",
-      city: "La Paz",
-      zone: "Calacoto / Sopocachi",
-      experience: "6+ años de experiencia",
-      isFeatured: false,
-      bio: "María Fernanda destaca por su atención personalizada para inversionistas y diplomáticos en la Zona Sur de La Paz, facilitando alquileres de alta gama y departamentos residenciales de primera categoría.",
-      whatsapp: "https://wa.me/59176543210",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    },
-    {
-      slug: "roberto-gutierrez",
-      name: "Roberto Gutierrez",
-      specialty: "Anticréticos & Terrenos de Inversión",
-      role: "Asesor Comercial de Anticréticos y Terrenos",
-      phone: "+591 789 01234",
-      email: "roberto.gutierrez@remax.bo",
-      propertiesCount: 15,
-      image: "/images/avatar-03_1avatar-03.png",
-      city: "Cochabamba",
-      zone: "Sarco / Zona Norte",
-      experience: "10+ años de experiencia",
-      isFeatured: false,
-      bio: "Roberto cuenta con amplia trayectoria en asesoría legal inmobiliaria, negociaciones de anticréticos y comercialización de terrenos con alta plusvalía en Cochabamba.",
-      whatsapp: "https://wa.me/59178901234",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    },
-    {
-      slug: "andrea-siles",
-      name: "Andrea Siles",
-      specialty: "Inmuebles Comerciales & Locales",
-      role: "Consultora Inmobiliaria de Inmuebles Comerciales",
-      phone: "+591 700 98765",
-      email: "andrea.siles@remax.bo",
-      propertiesCount: 12,
-      image: "/images/avatar-01_1avatar-01.png",
-      city: "Santa Cruz",
-      zone: "Centro / Sirari",
-      experience: "5+ años de experiencia",
-      isFeatured: false,
-      bio: "Especialista en la intermediación de espacios corporativos, oficinas comerciales y terrenos industriales estratégicos en Santa Cruz.",
-      whatsapp: "https://wa.me/59170098765",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    },
-    {
-      slug: "gabriel-morales",
-      name: "Gabriel Morales",
-      specialty: "Asesoría Financiera & Proyectos VIP",
-      role: "Asesor Financiero e Inmobiliario VIP",
-      phone: "+591 733 11223",
-      email: "gabriel.morales@remax.bo",
-      propertiesCount: 21,
-      image: "/images/avatar-02_1avatar-02.png",
-      city: "La Paz",
-      zone: "Achumani / San Miguel",
-      experience: "7+ años de experiencia",
-      isFeatured: true,
-      bio: "Gabriel integra análisis financiero de inversión con gestión inmobiliaria para asegurar retornos óptimos en compraventas de departamentos y proyectos verticales en La Paz.",
-      whatsapp: "https://wa.me/59173311223",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    },
-    {
-      slug: "valeria-roca",
-      name: "Valeria Roca",
-      specialty: "Ventas Residencia & Desarrollo de Proyectos",
-      role: "Agente Certificada en Ventas y Proyectos",
-      phone: "+591 722 44556",
-      email: "valeria.roca@remax.bo",
-      propertiesCount: 19,
-      image: "/images/avatar-03_1avatar-03.png",
-      city: "Cochabamba",
-      zone: "Queru Queru / América",
-      experience: "4+ años de experiencia",
-      isFeatured: false,
-      bio: "Valeria lidera la comercialización de emprendimientos inmobiliarios modernos y viviendas familiares en Cochabamba con asesoramiento transparente en cada etapa.",
-      whatsapp: "https://wa.me/59172244556",
-      instagram: "https://instagram.com/remax.bolivia",
-      facebook: "https://facebook.com/remaxbolivia"
-    }
-  ];
+  {
+    slug: "ivanna-maria-arias-balcazar",
+    name: "Ivanna Maria Arias Balcazar",
+    license: "102201058",
+    specialty: "Lic. 102201058 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 22010",
+    email: "ivanna.arias@remax-black.com",
+    propertiesCount: 18,
+    image: "/images/agentes/ivanna-arias.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "5+ años de experiencia",
+    isFeatured: true,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171022010",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "nils-fernando-artieda-galdo",
+    name: "Nils Fernando Artieda Galdo",
+    license: "102266540",
+    specialty: "Lic. 102266540 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 26654",
+    email: "nils.artieda@remax-black.com",
+    propertiesCount: 15,
+    image: "/images/agentes/nils-artieda.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "4+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesor inmobiliario certificado RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171026654",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "carmen-shirley-confessori-mostajo",
+    name: "Carmen Shirley Confessori Mostajo",
+    license: "102419877",
+    specialty: "Lic. 102419877 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 41987",
+    email: "carmen.confessori@remax-black.com",
+    propertiesCount: 22,
+    image: "/images/agentes/carmen-confessori.jpg",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "6+ años de experiencia",
+    isFeatured: true,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171041987",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "larissa-conche-de-souza",
+    name: "Larissa Conche de Souza",
+    license: "102566104",
+    specialty: "Lic. 102566104 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 56610",
+    email: "larissa.conche@remax-black.com",
+    propertiesCount: 14,
+    image: "/images/agentes/larissa-conche.webp",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "3+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171056610",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "eliana-encinas-abrego",
+    name: "Eliana Encinas Abrego",
+    license: "102562308",
+    specialty: "Lic. 102562308 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 56230",
+    email: "eliana.encinas@remax-black.com",
+    propertiesCount: 19,
+    image: "/images/agentes/eliana-encinas.webp",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "5+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171056230",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "kathia-zoraya-ferrufino-rivera",
+    name: "Kathia Zoraya Ferrufino Rivera",
+    license: "",
+    specialty: "RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 77889",
+    email: "kathia.ferrufino@remax-black.com",
+    propertiesCount: 11,
+    image: "/images/agentes/kathia-ferrufino.webp",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "4+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171077889",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "karen-sheila-hessling",
+    name: "Karen Sheila Hessling",
+    license: "102106068",
+    specialty: "Lic. 102106068 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 10606",
+    email: "karen.hessling@remax-black.com",
+    propertiesCount: 16,
+    image: "/images/agentes/karen-sheila.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "7+ años de experiencia",
+    isFeatured: true,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171010606",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "carla-kinn-cortez",
+    name: "Carla Kinn Cortez",
+    license: "102303018",
+    specialty: "Lic. 102303018 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 30301",
+    email: "carla.kinn@remax-black.com",
+    propertiesCount: 25,
+    image: "/images/agentes/carla-kinn.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "8+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesora inmobiliaria certificada RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171030301",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "zdenko-knez-araya",
+    name: "Zdenko Knez Araya",
+    license: "102067188",
+    specialty: "Lic. 102067188 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 06718",
+    email: "zdenko.knez@remax-black.com",
+    propertiesCount: 20,
+    image: "/images/agentes/zdenko-knez.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "6+ años de experiencia",
+    isFeatured: false,
+    bio: "Asesor inmobiliario certificado RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171006718",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  },
+  {
+    slug: "pablo-alejandro-paz-soria",
+    name: "Pablo Alejandro Paz Soria",
+    license: "102071049",
+    specialty: "Lic. 102071049 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 07104",
+    email: "pablo.paz@remax-black.com",
+    propertiesCount: 17,
+    image: "/images/agentes/pablo-paz.png",
+    city: "Santa Cruz",
+    zone: "Avenida La Salle , Casa 5 G",
+    experience: "5+ años de experiencia",
+    isFeatured: true,
+    bio: "Asesor inmobiliario certificado RE/MAX Black con oficina en Avenida La Salle, Casa 5 G, Santa Cruz.",
+    whatsapp: "https://wa.me/59171007104",
+    instagram: "https://instagram.com/remax.bolivia",
+    facebook: "https://facebook.com/remaxbolivia"
+  }
+];
 
 const { slug } = Astro.params;
 const agent = agentsList.find(a => a.slug === slug) || agentsList[0];
@@ -337,7 +419,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   /* Profile Header Section */
   .agent-profile-section {
     padding: 60px 0 40px;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
   }
 
   .agent-profile-card {
@@ -364,7 +446,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
     border-radius: 50%;
     overflow: hidden;
     border: 4px solid #ffffff;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 2px #165cfd;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 2px #0043ff;
     background-color: #f1f5f9;
   }
 
@@ -387,8 +469,8 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   }
 
   .experience-pill {
-    background-color: #eff6ff;
-    color: #165cfd;
+    background-color: #f7f5ee;
+    color: #0043ff;
     font-size: 0.8rem;
     font-weight: 800;
     padding: 6px 14px;
@@ -448,7 +530,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
     font-size: 0.9rem;
     color: #64748b;
     font-weight: 600;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
     padding: 6px 14px;
     border-radius: 10px;
     border: 1px solid #f1f5f9;
@@ -488,7 +570,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
     gap: 8px;
     padding: 10px 18px;
     border-radius: 12px;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
     border: 1px solid #e2e8f0;
     color: #475569;
     font-size: 0.9rem;
@@ -519,9 +601,9 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   }
 
   .social-btn.email-social:hover {
-    background-color: #165cfd;
+    background-color: #0043ff;
     color: #ffffff;
-    border-color: #165cfd;
+    border-color: #0043ff;
     box-shadow: 0 4px 14px rgba(22, 92, 253, 0.3);
   }
 
@@ -558,7 +640,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   /* Inquiry Form Section */
   .agent-inquiry-section {
     padding: 40px 0 90px;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
   }
 
   .inquiry-card {
@@ -599,7 +681,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
     padding: 14px 18px;
     border-radius: 12px;
     border: 1px solid #cbd5e1;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
     font-size: 0.95rem;
     color: #0f172a;
     outline: none;
@@ -608,7 +690,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   }
 
   .form-input:focus {
-    border-color: #165cfd;
+    border-color: #0043ff;
     background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(22, 92, 253, 0.1);
   }
@@ -619,7 +701,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   }
 
   .submit-inquiry-btn {
-    background-color: #165cfd;
+    background-color: #0043ff;
     color: #ffffff;
     border: none;
     padding: 16px 36px;
@@ -633,7 +715,7 @@ const whatsappUrl = `https://wa.me/${cleanPhoneDigits}?text=Hola%20${encodeURICo
   }
 
   .submit-inquiry-btn:hover {
-    background-color: #1d4ed8;
+    background-color: #0043ff;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(22, 92, 253, 0.35);
   }

@@ -1,135 +1,239 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import PageHeader from '../components/PageHeader.astro';
-import AgentCard from '../components/AgentCard.astro';
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHeader from "../components/PageHeader.astro";
+import AgentCard from "../components/AgentCard.astro";
 
-import { fetchAPI } from '../lib/api';
+import { fetchAPI } from "../lib/api";
 
 const staticAgentes = [
   {
-    name: "Carlos Mendoza",
-    specialty: "Casas & condominios",
-    role: "Agente Senior - Casas & Condominios",
-    phone: "+591 712 34567",
-    email: "carlos.mendoza@remax.bo",
+    name: "Ivanna Maria Arias Balcazar",
+    license: "102201058",
+    specialty: "Lic. 102201058 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 22010",
+    email: "ivanna.arias@remax-black.com",
     properties: 18,
-    image: "/images/avatar-01_1avatar-01.png",
+    image: "/images/agentes/ivanna-arias.png",
     city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
     isFeatured: true,
-    initials: "CM"
+    initials: "IA",
+    slug: "ivanna-maria-arias-balcazar",
   },
   {
-    name: "María Fernanda Claros",
-    specialty: "Departamentos y alquileres",
-    role: "Especialista en Departamentos y Alquileres",
-    phone: "+591 765 43210",
-    email: "maria.claros@remax.bo",
-    properties: 24,
-    image: "/images/avatar-02_1avatar-02.png",
-    city: "La Paz",
-    isFeatured: false,
-    initials: "MF"
-  },
-  {
-    name: "Roberto Gutierrez",
-    specialty: "Anticréticos y terrenos",
-    role: "Asesor Comercial de Anticréticos y Terrenos",
-    phone: "+591 789 01234",
-    email: "roberto.gutierrez@remax.bo",
+    name: "Nils Fernando Artieda Galdo",
+    license: "102266540",
+    specialty: "Lic. 102266540 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 26654",
+    email: "nils.artieda@remax-black.com",
     properties: 15,
-    image: "/images/avatar-03_1avatar-03.png",
-    city: "Cochabamba",
-    isFeatured: false,
-    initials: "RG"
-  },
-  {
-    name: "Andrea Siles",
-    specialty: "Inmuebles comerciales",
-    role: "Consultora Inmobiliaria de Inmuebles Comerciales",
-    phone: "+591 700 98765",
-    email: "andrea.siles@remax.bo",
-    properties: 12,
-    image: "/images/avatar-01_1avatar-01.png",
+    image: "/images/agentes/nils-artieda.png",
     city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
     isFeatured: false,
-    initials: "AS"
+    initials: "NA",
+    slug: "nils-fernando-artieda-galdo",
   },
   {
-    name: "Gabriel Morales",
-    specialty: "Asesor financiero e inmobiliario",
-    role: "Asesor Financiero e Inmobiliario",
-    phone: "+591 733 11223",
-    email: "gabriel.morales@remax.bo",
-    properties: 21,
-    image: "/images/avatar-02_1avatar-02.png",
-    city: "La Paz",
+    name: "Carmen Shirley Confessori Mostajo",
+    license: "102419877",
+    specialty: "Lic. 102419877 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 41987",
+    email: "carmen.confessori@remax-black.com",
+    properties: 22,
+    image: "/images/agentes/carmen-confessori.jpg",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
     isFeatured: true,
-    initials: "GM"
+    initials: "CC",
+    slug: "carmen-shirley-confessori-mostajo",
   },
   {
-    name: "Valeria Roca",
-    specialty: "Ventas y proyectos",
-    role: "Agente Certificada en Ventas y Proyectos",
-    phone: "+591 722 44556",
-    email: "valeria.roca@remax.bo",
-    properties: 19,
-    image: "/images/avatar-03_1avatar-03.png",
-    city: "Cochabamba",
+    name: "Larissa Conche de Souza",
+    license: "102566104",
+    specialty: "Lic. 102566104 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 56610",
+    email: "larissa.conche@remax-black.com",
+    properties: 14,
+    image: "/images/agentes/larissa-conche.webp",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
     isFeatured: false,
-    initials: "VR"
-  }
+    initials: "LC",
+    slug: "larissa-conche-de-souza",
+  },
+  {
+    name: "Eliana Encinas Abrego",
+    license: "102562308",
+    specialty: "Lic. 102562308 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 56230",
+    email: "eliana.encinas@remax-black.com",
+    properties: 19,
+    image: "/images/agentes/eliana-encinas.webp",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: false,
+    initials: "EE",
+    slug: "eliana-encinas-abrego",
+  },
+  {
+    name: "Kathia Zoraya Ferrufino Rivera",
+    license: "",
+    specialty: "RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 77889",
+    email: "kathia.ferrufino@remax-black.com",
+    properties: 11,
+    image: "/images/agentes/kathia-ferrufino.webp",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: false,
+    initials: "KF",
+    slug: "kathia-zoraya-ferrufino-rivera",
+  },
+  {
+    name: "Karen Sheila Hessling",
+    license: "102106068",
+    specialty: "Lic. 102106068 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 10606",
+    email: "karen.hessling@remax-black.com",
+    properties: 16,
+    image: "/images/agentes/karen-sheila.png",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: true,
+    initials: "KH",
+    slug: "karen-sheila-hessling",
+  },
+  {
+    name: "Carla Kinn Cortez",
+    license: "102303018",
+    specialty: "Lic. 102303018 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 30301",
+    email: "carla.kinn@remax-black.com",
+    properties: 25,
+    image: "/images/agentes/carla-kinn.png",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: false,
+    initials: "CK",
+    slug: "carla-kinn-cortez",
+  },
+  {
+    name: "Zdenko Knez Araya",
+    license: "102067188",
+    specialty: "Lic. 102067188 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 06718",
+    email: "zdenko.knez@remax-black.com",
+    properties: 20,
+    image: "/images/agentes/zdenko-knez.png",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: false,
+    initials: "ZK",
+    slug: "zdenko-knez-araya",
+  },
+  {
+    name: "Pablo Alejandro Paz Soria",
+    license: "102071049",
+    specialty: "Lic. 102071049 • RE/MAX Black",
+    role: "Agente Inmobiliario RE/MAX Black",
+    phone: "+591 710 07104",
+    email: "pablo.paz@remax-black.com",
+    properties: 17,
+    image: "/images/agentes/pablo-paz.png",
+    city: "Santa Cruz",
+    address: "Avenida La Salle , Casa 5 G",
+    isFeatured: true,
+    initials: "PP",
+    slug: "pablo-alejandro-paz-soria",
+  },
 ];
 
 let agentes = [];
 try {
-  const response = await fetchAPI('agentes', { populate: 'image' });
+  const response = await fetchAPI("agentes", { populate: "image" });
   const data = response.data || [];
   if (data.length > 0) {
-      agentes = data.map((item: any, idx: number) => {
-        const entry = item.documentId ? item : (item.attributes || item);
-        const imageUrl = entry.image?.url || entry.image?.data?.attributes?.url || '';
-        
-        let finalImage = imageUrl;
-        if (imageUrl && imageUrl.startsWith('/uploads/')) {
-          finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
-        } else if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
-          finalImage = `${import.meta.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`;
-        }
-        
-        const generatedSlug = entry.slug || entry.name?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "") || `agente-${idx}`;
-        
-        return {
-          name: entry.name,
-          slug: generatedSlug,
-          specialty: entry.specialty || entry.role || "Asesor Inmobiliario",
-          role: entry.role,
-          phone: entry.phone,
-          email: entry.email,
-          properties: entry.propertiesCount || (10 + idx * 3),
-          image: finalImage,
-          city: entry.city || "Santa Cruz",
-          zone: entry.zone || "Equipetrol",
-          experience: entry.experience || "5+ años de experiencia",
-          bio: entry.bio || "",
-          isFeatured: entry.isFeatured ?? (idx % 4 === 0),
-          initials: entry.initials || entry.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase(),
-          whatsapp: entry.whatsapp,
-          instagram: entry.instagram,
-          facebook: entry.facebook
-        };
-      });
+    agentes = data.map((item: any, idx: number) => {
+      const entry = item.documentId ? item : item.attributes || item;
+      const imageUrl =
+        entry.image?.url || entry.image?.data?.attributes?.url || "";
+
+      let finalImage = imageUrl;
+      if (imageUrl && imageUrl.startsWith("/uploads/")) {
+        finalImage = `${import.meta.env.STRAPI_URL || "http://localhost:1337"}${imageUrl}`;
+      } else if (
+        imageUrl &&
+        !imageUrl.startsWith("http") &&
+        !imageUrl.startsWith("/")
+      ) {
+        finalImage = `${import.meta.env.STRAPI_URL || "http://localhost:1337"}${imageUrl}`;
+      }
+
+      const generatedSlug =
+        entry.slug ||
+        entry.name
+          ?.toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "") ||
+        `agente-${idx}`;
+
+      return {
+        name: entry.name,
+        slug: generatedSlug,
+        specialty: entry.specialty || entry.role || "Asesor Inmobiliario",
+        role: entry.role,
+        phone: entry.phone,
+        email: entry.email,
+        properties: entry.propertiesCount || 10 + idx * 3,
+        image: finalImage,
+        city: entry.city || "Santa Cruz",
+        zone: entry.zone || "Equipetrol",
+        experience: entry.experience || "5+ años de experiencia",
+        bio: entry.bio || "",
+        isFeatured: entry.isFeatured ?? idx % 4 === 0,
+        initials:
+          entry.initials ||
+          entry.name
+            .split(" ")
+            .map((n: string) => n[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase(),
+        whatsapp: entry.whatsapp,
+        instagram: entry.instagram,
+        facebook: entry.facebook,
+      };
+    });
   } else {
     agentes = staticAgentes;
   }
 } catch (error) {
-  console.warn('Error fetching agents from Strapi, falling back to static data:', error);
+  console.warn(
+    "Error fetching agents from Strapi, falling back to static data:",
+    error,
+  );
   agentes = staticAgentes;
 }
 ---
 
-<Layout title="Nuestros Agentes Inmobiliarios | RE/MAX Bolivia" description="Encuentra al agente inmobiliario ideal para vender, alquilar o comprar tu propiedad con seguridad y respaldo en Bolivia.">
+<Layout
+  title="Nuestros Agentes Inmobiliarios | RE/MAX Bolivia"
+  description="Encuentra al agente inmobiliario ideal para vender, alquilar o comprar tu propiedad con seguridad y respaldo en Bolivia."
+>
   <Header />
 
   <main class="main-wrapper">
@@ -143,12 +247,19 @@ try {
     <!-- Section Agents Directory -->
     <section class="agents-section">
       <div class="container-main">
-
         <!-- Top Controls Bar matching Screenshot -->
         <div class="controls-top-bar">
           <!-- Search Input -->
           <div class="search-input-wrapper">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="search-icon"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -163,24 +274,58 @@ try {
           <!-- City Filter Pills & View Toggles -->
           <div class="controls-right">
             <div class="city-pills-group">
-              <button class="city-pill active" data-city="ALL" type="button">Todos</button>
-              <button class="city-pill" data-city="Santa Cruz" type="button">Santa Cruz</button>
-              <button class="city-pill" data-city="La Paz" type="button">La Paz</button>
-              <button class="city-pill" data-city="Cochabamba" type="button">Cochabamba</button>
+              <button class="city-pill active" data-city="ALL" type="button"
+                >Todos</button
+              >
+              <button class="city-pill" data-city="Santa Cruz" type="button"
+                >Santa Cruz</button
+              >
+              <button class="city-pill" data-city="La Paz" type="button"
+                >La Paz</button
+              >
+              <button class="city-pill" data-city="Cochabamba" type="button"
+                >Cochabamba</button
+              >
             </div>
 
             <!-- Grid / List View Toggle Button -->
             <div class="view-mode-toggle">
-              <button id="btnGridView" class="view-btn active" title="Vista en cuadrícula" aria-label="Vista en cuadrícula" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button
+                id="btnGridView"
+                class="view-btn active"
+                title="Vista en cuadrícula"
+                aria-label="Vista en cuadrícula"
+                type="button"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
                   <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
                   <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
                   <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
                 </svg>
               </button>
-              <button id="btnListView" class="view-btn" title="Vista en lista" aria-label="Vista en lista" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button
+                id="btnListView"
+                class="view-btn"
+                title="Vista en lista"
+                aria-label="Vista en lista"
+                type="button"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <line x1="8" y1="6" x2="21" y2="6"></line>
                   <line x1="8" y1="12" x2="21" y2="12"></line>
                   <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -200,34 +345,44 @@ try {
 
         <!-- Agents Grid -->
         <div id="agentsGridContainer" class="agents-grid-layout">
-          {agentes.map((agente) => (
-            <div class="agent-item-wrapper" data-city={agente.city} data-name={agente.name.toLowerCase()} data-specialty={agente.specialty.toLowerCase()}>
-              <AgentCard
-                name={agente.name}
-                specialty={agente.specialty}
-                role={agente.role}
-                phone={agente.phone}
-                email={agente.email}
-                propertiesCount={agente.properties}
-                image={agente.image}
-                city={agente.city}
-                isFeatured={agente.isFeatured}
-                initials={agente.initials}
-                instagram={agente.instagram}
-                facebook={agente.facebook}
-                slug={agente.slug}
-              />
-            </div>
-          ))}
+          {
+            agentes.map((agente) => (
+              <div
+                class="agent-item-wrapper"
+                data-city={agente.city}
+                data-name={agente.name.toLowerCase()}
+                data-specialty={agente.specialty.toLowerCase()}
+              >
+                <AgentCard
+                  name={agente.name}
+                  specialty={agente.specialty}
+                  role={agente.role}
+                  phone={agente.phone}
+                  email={agente.email}
+                  propertiesCount={agente.properties}
+                  image={agente.image}
+                  city={agente.city}
+                  isFeatured={agente.isFeatured}
+                  initials={agente.initials}
+                  instagram={agente.instagram}
+                  facebook={agente.facebook}
+                  slug={agente.slug}
+                />
+              </div>
+            ))
+          }
         </div>
 
         <!-- Empty State -->
-        <div id="agentsEmptyState" class="agents-empty-state" style="display: none;">
+        <div
+          id="agentsEmptyState"
+          class="agents-empty-state"
+          style="display: none;"
+        >
           <div class="empty-icon">👥</div>
           <h3>No se encontraron agentes</h3>
           <p>Prueba con otros términos de búsqueda o selecciona otra ciudad.</p>
         </div>
-
       </div>
     </section>
 
@@ -238,7 +393,11 @@ try {
           <div class="join-content">
             <span class="join-badge">Carrera Inmobiliaria</span>
             <h2>¿Quieres formar parte de la red de Agentes RE/MAX?</h2>
-            <p>Emprende con el respaldo de la franquicia inmobiliaria #1 en Bolivia y el mundo. Desarrolla tu propio negocio con capacitaciones continuas y tecnología de punta.</p>
+            <p>
+              Emprende con el respaldo de la franquicia inmobiliaria #1 en
+              Bolivia y el mundo. Desarrolla tu propio negocio con
+              capacitaciones continuas y tecnología de punta.
+            </p>
             <a href="/quieres-ser-agente" class="join-btn">Únete como Agente</a>
           </div>
         </div>
@@ -250,87 +409,93 @@ try {
 </Layout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // Intersection Observer for Carrera Inmobiliaria card animation
-    const joinCard = document.querySelector('.animated-join-card');
+    const joinCard = document.querySelector(".animated-join-card");
     if (joinCard) {
-      const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      }, { threshold: 0.15 });
+      const cardObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
       cardObserver.observe(joinCard);
     }
 
-    const searchInput = document.getElementById('agentSearchInput');
-    const cityPills = document.querySelectorAll('.city-pill');
-    const btnGridView = document.getElementById('btnGridView');
-    const btnListView = document.getElementById('btnListView');
-    const gridContainer = document.getElementById('agentsGridContainer');
-    const agentWrappers = Array.from(document.querySelectorAll('.agent-item-wrapper'));
-    const countBadge = document.getElementById('agentsCountBadge');
-    const emptyState = document.getElementById('agentsEmptyState');
+    const searchInput = document.getElementById("agentSearchInput");
+    const cityPills = document.querySelectorAll(".city-pill");
+    const btnGridView = document.getElementById("btnGridView");
+    const btnListView = document.getElementById("btnListView");
+    const gridContainer = document.getElementById("agentsGridContainer");
+    const agentWrappers = Array.from(
+      document.querySelectorAll(".agent-item-wrapper"),
+    );
+    const countBadge = document.getElementById("agentsCountBadge");
+    const emptyState = document.getElementById("agentsEmptyState");
 
-    let activeCity = 'ALL';
+    let activeCity = "ALL";
 
     function filterAgents() {
-      const query = (searchInput?.value || '').toLowerCase().trim();
+      const query = (searchInput?.value || "").toLowerCase().trim();
       let visibleCount = 0;
 
-      agentWrappers.forEach(wrapper => {
-        const name = wrapper.getAttribute('data-name') || '';
-        const specialty = wrapper.getAttribute('data-specialty') || '';
-        const city = wrapper.getAttribute('data-city') || '';
+      agentWrappers.forEach((wrapper) => {
+        const name = wrapper.getAttribute("data-name") || "";
+        const specialty = wrapper.getAttribute("data-specialty") || "";
+        const city = wrapper.getAttribute("data-city") || "";
 
-        const matchesQuery = !query || name.includes(query) || specialty.includes(query);
-        const matchesCity = activeCity === 'ALL' || city === activeCity;
+        const matchesQuery =
+          !query || name.includes(query) || specialty.includes(query);
+        const matchesCity = activeCity === "ALL" || city === activeCity;
 
         if (matchesQuery && matchesCity) {
-          wrapper.style.display = 'block';
+          wrapper.style.display = "block";
           visibleCount++;
         } else {
-          wrapper.style.display = 'none';
+          wrapper.style.display = "none";
         }
       });
 
       if (countBadge) {
-        countBadge.textContent = `${visibleCount} ${visibleCount === 1 ? 'agente' : 'agentes'}`;
+        countBadge.textContent = `${visibleCount} ${visibleCount === 1 ? "agente" : "agentes"}`;
       }
 
       if (emptyState) {
-        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        emptyState.style.display = visibleCount === 0 ? "block" : "none";
       }
     }
 
     // City Filter Pills Listener
-    cityPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        cityPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        activeCity = pill.getAttribute('data-city') || 'ALL';
+    cityPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        cityPills.forEach((p) => p.classList.remove("active"));
+        pill.classList.add("active");
+        activeCity = pill.getAttribute("data-city") || "ALL";
         filterAgents();
       });
     });
 
     // Search Input Listener
     if (searchInput) {
-      searchInput.addEventListener('input', filterAgents);
+      searchInput.addEventListener("input", filterAgents);
     }
 
     // Grid vs List Toggle Listeners
     if (btnGridView && btnListView && gridContainer) {
-      btnGridView.addEventListener('click', () => {
-        btnGridView.classList.add('active');
-        btnListView.classList.remove('active');
-        gridContainer.classList.remove('is-list-view');
+      btnGridView.addEventListener("click", () => {
+        btnGridView.classList.add("active");
+        btnListView.classList.remove("active");
+        gridContainer.classList.remove("is-list-view");
       });
 
-      btnListView.addEventListener('click', () => {
-        btnListView.classList.add('active');
-        btnGridView.classList.remove('active');
-        gridContainer.classList.add('is-list-view');
+      btnListView.addEventListener("click", () => {
+        btnListView.classList.add("active");
+        btnGridView.classList.remove("active");
+        gridContainer.classList.add("is-list-view");
       });
     }
   });
@@ -339,7 +504,7 @@ try {
 <style>
   .agents-section {
     padding: 50px 0 90px;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
   }
 
   .container-main {
@@ -388,7 +553,7 @@ try {
   }
 
   .agent-search-input:focus {
-    border-color: #165cfd;
+    border-color: #0043ff;
     box-shadow: 0 0 0 3px rgba(22, 92, 253, 0.1);
   }
 
@@ -419,7 +584,7 @@ try {
   }
 
   .city-pill:hover {
-    color: #165cfd;
+    color: #0043ff;
   }
 
   .city-pill.active {
@@ -510,11 +675,11 @@ try {
   /* Join Team Section (Cream & Minimalist Animated) */
   .join-team-section {
     padding: 40px 0 90px;
-    background-color: #f8fafc;
+    background-color: #f7f5ee;
   }
 
   .join-card {
-    background: #f7f5f0; /* Elegant warm cream tone */
+    background: #f7f5ee; /* Elegant warm cream tone */
     border: 1px solid rgba(0, 0, 0, 0.07);
     border-radius: 24px;
     padding: 56px 48px;
@@ -524,9 +689,10 @@ try {
     overflow: hidden;
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.3s ease;
+    transition:
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.3s ease;
   }
 
   .join-card.is-visible {
@@ -541,7 +707,7 @@ try {
 
   .join-badge {
     background: rgba(190, 18, 60, 0.08);
-    color: #be123c;
+    color: #ff1200;
     border: 1px solid rgba(190, 18, 60, 0.2);
     padding: 6px 16px;
     border-radius: 20px;
@@ -572,7 +738,7 @@ try {
 
   .join-btn {
     display: inline-block;
-    background: #165cfd;
+    background: #0043ff;
     color: #ffffff;
     padding: 14px 34px;
     border-radius: 12px;
@@ -584,7 +750,7 @@ try {
   }
 
   .join-btn:hover {
-    background: #1d4ed8;
+    background: #0043ff;
     transform: translateY(-2px);
     box-shadow: 0 10px 28px rgba(22, 92, 253, 0.38);
   }
